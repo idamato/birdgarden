@@ -8,6 +8,6 @@ cd $WORKDIR/departures
 
 for item in $(ls -1); do
   echo "ls -l $item"
-  #scp $item ilfarodargento@<serverFQDN>:/home/ilfarodargento/arrivals/$CPUID.$DATA.$item
+  # esegue la pubblicazione dell'articolo in wordpress
   ../wordpress_playground.py $CPUID $DATA $item && mv $item ../sent/
 done
