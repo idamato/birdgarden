@@ -8,7 +8,7 @@ now = datetime.now()
 formatted_date_time = now.strftime("%Y%m%d%H%M%S")
 
 seriale = sys.argv[0]
-sensor_data = sys.argv[1]
+datafile = sys.argv[1]
 media = sys.argv[2]
 
 wp_user = "INSERT-WORDPRESS-USERNAME"
@@ -17,7 +17,7 @@ wp_pw = "INSERT-WORDPRESS-APPLICATION-PASSWORD"
 # Esempio da adeguare al contesto
 url = "www.webradiofaro.it/wp" #you set the root domain of your WordPress site
 # media = "images/000000008279d33b.2025010232901.3_75_21_37_3.jpg" #you set the location of the image you want to upload
-filename = seriale + "." + formatted_date_time + "." + sensor_data #you set the name of your image
+filename = seriale + "." + datafile #you set the name of your image
 title = "Il mio primo articolo generato con Python" #you set the title of your first WordPress post
 body = "Quando le immagini parlano è inutile spendere troppe parole..."
 categories = [97] # birdgarden
