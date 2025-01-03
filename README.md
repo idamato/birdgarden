@@ -5,11 +5,13 @@ Occorre scaricare ed installare Raspberry Pi OS sulla scheda SSD utilizzando il 
 Inserire successivamente la scheda SSD nel Raspberry Pi Zero 2W, collegarvi una tastiera tramite il cavetto USB, il monitor con adattatore mini HDMI ed il camera module con il cavo apposito
 Eseguire le operazioni seguenti:
 
-eseguire il login con username e password
-eseguire l’aggiornamento di Linux con:
+1. eseguire il login con username e password
+2. eseguire l’aggiornamento di Linux con:
           sudo apt update && sudo apt upgrade
-installare le librerie Python necessarie
-           pip install serial 
-scaricare il software dal repository GIT
-           git...
-configurare i comandi a tempo (crontab)
+3. installare le librerie Python necessarie
+           pip install serial picamera2 requests base64
+4. scaricare il software dal repository GIT
+           git clone https://github.com/idamato/birdgarden/
+5. modificare username e password nel file wordpress_playground.py secondo le indicazioni ricevute al momento dell'adesione al progetto.
+6. configurare i comandi a tempo (crontab)
+           
