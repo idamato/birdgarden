@@ -12,6 +12,7 @@ Eseguire le operazioni seguenti:
            pip install serial picamera2 requests base64
 4. scaricare il software dal repository GIT
            git clone https://github.com/idamato/birdgarden/
-5. modificare username e password nel file wordpress_playground.py secondo le indicazioni ricevute al momento dell'adesione al progetto.
-6. configurare i comandi a tempo (crontab)
+5. modificare username e password e identificativo TAG con la CPUID nel file wordpress_playground.py secondo le indicazioni ricevute al momento dell'adesione al progetto.
+6. configurare il comando a tempo (crontab -e)
+
            
