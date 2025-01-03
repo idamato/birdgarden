@@ -9,5 +9,5 @@ cd $WORKDIR/departures
 for item in $(ls -1); do
   echo "ls -l $item"
   #scp $item ilfarodargento@<serverFQDN>:/home/ilfarodargento/arrivals/$CPUID.$DATA.$item
-  ../wordpress_playground.py /home/ilfarodargento/arrivals/$CPUID.$DATA.$item && mv $item ../sent/
+  ../wordpress_playground.py $CPUID $DATA $item && mv $item ../sent/
 done
