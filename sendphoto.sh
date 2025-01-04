@@ -9,5 +9,5 @@ cd $WORKDIR/departures
 for item in $(ls -1); do
   echo "ls -l $item"
   # esegue la pubblicazione dell'articolo in wordpress
-  ../birdgarden/wordpress_playground.py $CPUID $DATA $item && mv $item ../sent/
+  /usr/bin/python ../birdgarden/wordpress_playground.py $CPUID $DATA $item && mv $item ../sent/
 done
