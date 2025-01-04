@@ -49,11 +49,13 @@ while True:
         camera.start()
         # capture_config = camera.create_still_configuration(main={"size":(1920, 1080)}, lores={"size":(640,480)})
         capture_config = camera.create_still_configuration()
-        filename = "/home/ilfarodargento/departures/" + str(id) + "_" + str(luce) + "_" + str(temperatura) + "_" + str(audio) + "_" + str(sonar) + ".jpg"
+        filename = "/home/ilfarodargento/departures/" + str(id) + "_" + str(luce) + "_" + str(temperatura) + "_" + str(audio) + "_" + str(sonar)
         # flash_led.on()
         sleep(1)
         # esegue la foto
-        camera.switch_mode_and_capture_file(capture_config, filename)
+        camera.switch_mode_and_capture_file(capture_config, filename + ".jpg")
+        # in caso di video
+        # camera.start_and_record_video(filename + ".mp4", duration=5)
         # flash_led.off()
         camera.stop()
         print('fatta foto: ', filename)
