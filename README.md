@@ -8,15 +8,16 @@ Inserire successivamente la scheda SSD nel Raspberry Pi Zero 2W, collegarvi una 
 Eseguire le operazioni seguenti:
 
 1. eseguire il login con username e password
-2. eseguire l’aggiornamento di Linux con:
+2. eseguire l’aggiornamento di Linux con i comandi:
           sudo apt update && sudo apt upgrade
-3. installare le librerie Python necessarie
+          sudo apt install -y python3-picamera2
+4. installare le librerie Python necessarie
            pip install serial picamera2 requests base64
-4. scaricare il software dal repository GIT
+5. scaricare il software dal repository GIT
            git clone https://github.com/idamato/birdgarden/
-5. modificare i permessi ai file scaricati con chmod a+x birdgarden/*.sh birdgarden/*.py
-6. modificare username e password e identificativo TAG con la CPUID nel file wordpress_playground.py secondo le indicazioni ricevute al momento dell'adesione al progetto.
-7. configurare il comando a tempo (crontab -e) aggiungendo in fondo la seguente riga:
+6. modificare i permessi ai file scaricati con chmod a+x birdgarden/*.sh birdgarden/*.py
+7. modificare username e password e identificativo TAG con la CPUID nel file wordpress_playground.py secondo le indicazioni ricevute al momento dell'adesione al progetto.
+8. configurare il comando a tempo (crontab -e) aggiungendo in fondo la seguente riga:
    * * * * * /home/ilfarodargento/birdgarden/sendphoto.sh >> /home/ilfarodargento/cron.log 2>&1
 9. esegure il test del focus della fotocamera sulla vostra installazione con lo script test-camera-focus.py
 10. collegare anche il dispositivo micro:bit caricandovi il codice serial_data_logger.py tramite il sito makecode.microbit.org
