@@ -7,22 +7,22 @@ Occorre scaricare ed installare Raspberry Pi OS sulla scheda SSD utilizzando il 
 Inserire successivamente la scheda SSD nel Raspberry Pi Zero 2W, collegarvi una tastiera tramite il cavetto USB, il monitor con adattatore mini HDMI ed il camera module con il cavo apposito
 Eseguire le operazioni seguenti:
 
-1. eseguire il login con username e password
-2. eseguire l’aggiornamento di Linux con i comandi:
+- eseguire il login con username e password
+- eseguire l’aggiornamento di Linux con i comandi:
    a. sudo apt update && sudo apt upgrade
    b. sudo apt install -y python3-picamera2
-4. installare le librerie Python necessarie
+- installare le librerie Python necessarie
    a. pip install serial picamera2 requests base64
-5. scaricare il software dal repository GITHUB
+- scaricare il software dal repository GITHUB
    a. sudo install git
    b. git clone https://github.com/idamato/birdgarden/
-7. modificare i permessi ai file scaricati con chmod a+x birdgarden/*.sh birdgarden/*.py
-8. modificare username e password e identificativo TAG con la CPUID nel file wordpress_playground.py secondo le indicazioni ricevute al momento dell'adesione al progetto.
-9. configurare il comando a tempo (crontab -e) aggiungendo in fondo la seguente riga:
+- modificare i permessi ai file scaricati con chmod a+x birdgarden/*.sh birdgarden/*.py
+- modificare username e password e identificativo TAG con la CPUID nel file wordpress_playground.py secondo le indicazioni ricevute al momento dell'adesione al progetto.
+- configurare il comando a tempo (crontab -e) aggiungendo in fondo la seguente riga:
    a. * * * * * /home/ilfarodargento/birdgarden/sendphoto.sh >> /home/ilfarodargento/cron.log 2>&1
-10. esegure il test del focus della fotocamera sulla vostra installazione con lo script test-camera-focus.py
-11. collegare anche il dispositivo micro:bit caricandovi il codice serial_data_logger.py tramite il sito makecode.microbit.org
-12. creare le due directory che conterranno le foto scattate e quelle spedite
+- esegure il test del focus della fotocamera sulla vostra installazione con lo script test-camera-focus.py
+- collegare anche il dispositivo micro:bit caricandovi il codice serial_data_logger.py tramite il sito makecode.microbit.org
+- creare le due directory che conterranno le foto scattate e quelle spedite
     a. mkdir departures sent
     
 
