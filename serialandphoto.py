@@ -2,6 +2,7 @@
 
 from time import sleep
 from picamera2 import Picamera2
+from libcamera import controls
 import serial
 # from gpiozero import LED
 # from gpiozero import MotionSensor
@@ -16,6 +17,19 @@ camera = Picamera2()
 
 id = 0
 # capture_config = camera.create_still_configuration(main={"size":(1920, 1080)}, lores={"size":(640,480)})
+
+# imposta il modo autofocus nel continuo
+# camera.set_controls({"AfMode": controls.AfModeEnum.Continuous})
+
+# imposta il modo autofocus con alta velocità
+camera.set_controls({"AfMode": controls.AfModeEnum.Continuous, "AfSpeed": controls.AfSpeedEnum.Fast})
+
+# imposta il focus in modalità manuale a 10cm, il minimo
+camera.set_controls({"AfMode": controls.AfModeEnum.Manual, "LensPosition": 0.1})
+
+# imposta la cattura di tre immagini consecutive
+# camera.start_and_capture_files("fastfocus{:d}.jpg", num_files=3, delay=0.5)
+
 capture_config = camera.create_still_configuration()
 # camera.configure(capture_config)
 
