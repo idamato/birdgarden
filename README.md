@@ -9,21 +9,21 @@ Eseguire le operazioni seguenti:
 
 - eseguire il login con username e password
 - eseguire l’aggiornamento di Linux con i comandi:
-   a. sudo apt update && sudo apt upgrade
-   b. sudo apt install -y python3-picamera2
+- sudo apt update && sudo apt upgrade
+- sudo apt install -y python3-picamera2
 - installare le librerie Python necessarie
-   a. pip install serial picamera2 requests base64
+- pip install serial picamera2 requests base64
 - scaricare il software dal repository GITHUB
-   a. sudo install git
-   b. git clone https://github.com/idamato/birdgarden/
+- sudo install git
+- git clone https://github.com/idamato/birdgarden/
 - modificare i permessi ai file scaricati con chmod a+x birdgarden/*.sh birdgarden/*.py
 - modificare username e password e identificativo TAG con la CPUID nel file wordpress_playground.py secondo le indicazioni ricevute al momento dell'adesione al progetto.
 - configurare il comando a tempo (crontab -e) aggiungendo in fondo la seguente riga:
-   a. * * * * * /home/ilfarodargento/birdgarden/sendphoto.sh >> /home/ilfarodargento/cron.log 2>&1
+- * * * * * /home/ilfarodargento/birdgarden/sendphoto.sh >> /home/ilfarodargento/cron.log 2>&1
 - esegure il test del focus della fotocamera sulla vostra installazione con lo script test-camera-focus.py
 - collegare anche il dispositivo micro:bit caricandovi il codice serial_data_logger.py tramite il sito makecode.microbit.org
 - creare le due directory che conterranno le foto scattate e quelle spedite
-    a. mkdir departures sent
+- mkdir departures sent
     
 
 
