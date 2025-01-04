@@ -22,7 +22,7 @@ id = 0
 # camera.set_controls({"AfMode": controls.AfModeEnum.Continuous})
 
 # imposta il modo autofocus con alta velocità
-camera.set_controls({"AfMode": controls.AfModeEnum.Continuous, "AfSpeed": controls.AfSpeedEnum.Fast})
+#camera.set_controls({"AfMode": controls.AfModeEnum.Continuous, "AfSpeed": controls.AfSpeedEnum.Fast})
 
 # imposta il focus in modalità manuale a 10cm, il minimo
 camera.set_controls({"AfMode": controls.AfModeEnum.Manual, "LensPosition": 10.0})
