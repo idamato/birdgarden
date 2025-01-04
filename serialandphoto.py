@@ -25,12 +25,12 @@ id = 0
 #camera.set_controls({"AfMode": controls.AfModeEnum.Continuous, "AfSpeed": controls.AfSpeedEnum.Fast})
 
 # imposta il focus in modalità manuale a 10cm, il minimo
-camera.set_controls({"AfMode": controls.AfModeEnum.Manual, "LensPosition": 10.0})
+# camera.set_controls({"AfMode": controls.AfModeEnum.Manual, "LensPosition": 10.0})
 
 # imposta la cattura di tre immagini consecutive
 # camera.start_and_capture_files("fastfocus{:d}.jpg", num_files=3, delay=0.5)
 
-capture_config = camera.create_still_configuration()
+# capture_config = camera.create_still_configuration()
 # camera.configure(capture_config)
 
 print ("Hello this is the start!")
@@ -51,6 +51,7 @@ while True:
         capture_config = camera.create_still_configuration()
         filename = "/home/ilfarodargento/departures/" + str(id) + "_" + str(luce) + "_" + str(temperatura) + "_" + str(audio) + "_" + str(sonar)
         # flash_led.on()
+        camera.set_controls({"AfMode": controls.AfModeEnum.Manual, "LensPosition": 10.0})
         sleep(1)
         # esegue la foto
         camera.switch_mode_and_capture_file(capture_config, filename + ".jpg")
