@@ -20,6 +20,7 @@ Eseguire le operazioni seguenti:
    * * * * * /home/ilfarodargento/birdgarden/sendphoto.sh >> /home/ilfarodargento/cron.log 2>&1
 9. esegure il test del focus della fotocamera sulla vostra installazione con lo script test-camera-focus.py
 10. collegare anche il dispositivo micro:bit caricandovi il codice serial_data_logger.py tramite il sito makecode.microbit.org
+11. creare le due directory che conterranno le foto scattate e quelle spedite
 
 
 
