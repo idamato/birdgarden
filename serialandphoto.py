@@ -50,7 +50,7 @@ while True:
         camera.start()
         # capture_config = camera.create_still_configuration(main={"size":(1920, 1080)}, lores={"size":(640,480)})
         capture_config = camera.create_still_configuration()
-        filename = "/home/ilfarodargento/software/departures/" + str(id) + "_" + str(luce) + "_" + str(temperatura) + "_" + str(audio) + "_" + str(sonar) + ".jpg"
+        filename = "/home/ilfarodargento/birdgarden/departures/" + str(id) + "_" + str(luce) + "_" + str(temperatura) + "_" + str(audio) + "_" + str(sonar) + ".jpg"
         # flash_led.on()
         sleep(1)
         # esegue la foto
