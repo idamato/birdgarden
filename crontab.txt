@@ -21,4 +21,4 @@
 # For more information see the manual pages of crontab(5) and cron(8)
 # 
 # m h  dom mon dow   command
-* * * * * /home/ilfarodargento/software/scripts/sendphoto.sh >> /home/ilfarodargento/software/logs/cron.log 2>&1
+* * * * * /home/ilfarodargento/birdgarden/sendphoto.sh >> /home/ilfarodargento/cron.log 2>&1
