@@ -33,7 +33,7 @@ wordpress_auth_media = wordpress_header(wp_user, wp_pw)[1]
 ext = os.path.splitext(media)[-1].lower()
 if ext == ".jpg":
      title = "Foto scattata dal Birdgarden " + seriale + " con timestamp " + datafile
-     body = "<a href=\"Immagine originale\"><img src=\"https://www.webradiofaro.it/birdgarden/wp-content/uploads/" + filename + "\"></a>"
+     body = "<a href=\"https://www.webradiofaro.it/birdgarden/wp-content/uploads/" + filename + "\">Immagine originale</a>"
      #image upload
      media_id = postmedia(url, media, filename, wordpress_auth_media)
      #post creation
