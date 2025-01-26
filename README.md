@@ -20,16 +20,14 @@ Eseguire le operazioni seguenti:
 - git clone https://github.com/idamato/birdgarden/
 - modificare i permessi ai file scaricati con chmod a+x birdgarden/*.sh birdgarden/*.py
 - modificare username e password e identificativo TAG con la CPUID nel file wordpress_playground.py secondo le indicazioni ricevute al momento dell'adesione al progetto.
-- nella /hom/ilfarodargento creare le tre directory di lavoro: mkdir logs departures sent
 - creare il link simbolico al file photo.service di avvio del servizio al boot:
  ln -s /etc/systemd/system/photo.service /home/birdgarden/scripts/photo.service
 - configurare il comando a tempo (crontab -e) aggiungendo in fondo la seguente riga:
  * * * * * /home/ilfarodargento/birdgarden/sendphoto.sh >> /home/ilfarodargento/logs/cron.log 2>&1
 - esegure il test del focus della fotocamera sulla vostra installazione con lo script test-camera-focus.py
 - collegare anche il dispositivo micro:bit caricandovi il codice serial_data_logger.py tramite il sito makecode.microbit.org
-- creare le due directory che conterranno le foto scattate e quelle spedite
-- mkdir departures sent
-    
+- creare le due directory che conterranno le foto scattate e quelle spedite e i log
+- mkdir departures sent logs
 
 
 
