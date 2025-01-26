@@ -51,14 +51,14 @@ while True:
         capture_config = camera.create_still_configuration()
         filename = "/home/ilfarodargento/departures/" + str(id) + "_" + str(luce) + "_" + str(temperatura) + "_" + str(audio) + "_" + str(sonar)
         # flash_led.on()
-        camera.set_controls({"AfMode": controls.AfModeEnum.Manual, "LensPosition": 10.0})
+        camera.set_controls({"AfMode": controls.AfModeEnum.Continuous, "AfSpeed": controls.AfSpeedEnum.Fast})
         sleep(1)
         # esegue la foto
         camera.switch_mode_and_capture_file(capture_config, filename + ".jpg")
         # in caso di video
-        # camera.start_and_record_video(filename + ".mp4", duration=5)
+        camera.start_and_record_video(filename + ".mp4", duration=15)
         # flash_led.off()
         camera.stop()
-        print('fatta foto: ', filename)
+        print('missione compiuta: ', filename)
       # sleep(1)
 done
