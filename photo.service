@@ -1,0 +1,9 @@
+# Unit file for systemd
+[Unit]
+Description=Make photos at serial event
+
+[Service]
+ExecStart=/usr/bin/bash -c '/usr/bin/python /home/ilfarodargento/birdgarden/serialandphoto.py' >>/home/ilfarodargento/logs/serialandphoto.log 
+
+[Install]
+WantedBy=multi-user.target
