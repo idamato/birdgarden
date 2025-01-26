@@ -15,13 +15,13 @@ wp_user = "INSERT-WORDPRESS-USERNAME"
 wp_pw = "INSERT-WORDPRESS-APPLICATION-PASSWORD"
 
 # Esempio da adeguare al contesto
-url = "www.webradiofaro.it/wp" #you set the root domain of your WordPress site
+url = "www.webradiofaro.it/birdgarden" #you set the root domain of your WordPress site
 # media = "images/000000008279d33b.2025010232901.3_75_21_37_3.jpg" #you set the location of the image you want to upload
-filename = seriale + "." + datafile #you set the name of your image
-title = "Foto scattata dal Birdgarden " + seriale #you set the title of your first WordPress post
+filename = seriale + "." + datafile + media #you set the name of your image
+title = "Foto scattata dal Birdgarden " + seriale + " con timestamp " + datafile #you set the title of your first WordPress post
 body = "Quando le immagini parlano è inutile spendere troppe parole..."
-categories = [97] # birdgarden
-tags = [94] #identificare il tag con la CPUID (seriale) del Raspberry mittente, creato al momento dell'iscrizione
+categories = [2] # birdgarden
+tags = [3] #identificare il tag con la CPUID (seriale) del Raspberry mittente, creato al momento dell'iscrizione
 
 #debug
 print("URL: " + url)
