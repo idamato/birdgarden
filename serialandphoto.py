@@ -4,6 +4,8 @@ from time import sleep
 from picamera2 import Picamera2
 from libcamera import controls
 import serial
+import numpy as np
+import subprocess
 # from gpiozero import LED
 # from gpiozero import MotionSensor
 
@@ -34,6 +36,7 @@ id = 0
 # camera.configure(capture_config)
 
 print ("Hello this is the start!")
+rpihalt = np.array([0,0,0,0,0])
 
 while True:
     rcv = ser.readline()
@@ -43,6 +46,15 @@ while True:
     if len(values) == 5: 
       luce, temperatura, audio, pin0, sonar = [int(value) for value in values]
       print(luce, temperatura, audio, pin0, sonar)
+      need_halt = np.array_equal(rpihalt, values)
+      if need_halt:
+        try:
+          # Execute the sudo halt command
+          subprocess.run(['sudo', 'halt'], check=True)
+        except subprocess.CalledProcessError as e:
+          print(f"Command halt failed with error: {e}")
+        except Exception as e:
+          print(f"An unexpected error occurred: {e}")
       if pin0:
         id += 1
         print('fare foto!')
