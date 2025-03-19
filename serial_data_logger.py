@@ -8,7 +8,7 @@ def on_button_pressed_a():
     basic.clear_screen()
 input.on_button_pressed(Button.A, on_button_pressed_a)
 
-# Invia il segnale di halt al RPi
+# Invia il segnale di halt al RPi (soluzione per spegnerlo)
 
 def on_logo_long_pressed():
     serial.write_line("0,0,0,0,0")
