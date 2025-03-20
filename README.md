@@ -20,26 +20,27 @@ Per il collegamento via seriale abbiamo utilizzato il comando: tio /dev/ttyUSB0,
 Quindi occorre scaricare ed installare Raspberry Pi OS sulla scheda SSD utilizzando il software Raspberry Pi Imager, completando la configurazione iniziale dell’utente e del wi-fi. Inserire successivamente la scheda SSD nel Raspberry Pi Zero 2W, collegarvi una tastiera e maouse tramite il cavetto USB, il monitor con adattatore mini HDMI (in alternativa si utilizzi la connessione seriale) ed il camera module con il cavo apposito.
 Eseguire le operazioni seguenti:
 
-- eseguire il login con username e password
+- eseguire il login con username e password impostati (l'importante è che la home directory si chiami /home/ilfarodargento)
 - eseguire l’aggiornamento di Linux con i comandi:
-- sudo apt update && sudo apt upgrade
-- sudo apt install -y python3-picamera2
-- sudo apt install -y ffmpeg
+- sudo apt update && sudo apt upgrade (occorre rispondere con Y confermando l'attività - questo task può durare anche 30 minuti)
+- se le librerie python-picamera2 non sono installate potete usare il comando: sudo apt install -y python3-picamera2
+- se le librerie per il video non sono installate potete usare il comando: sudo apt install -y ffmpeg
 - installare le librerie Python necessarie
-- pip install serial picamera2 requests base64
+- la maggior parte delle librerie python3 sono installate, occorrono le seguenti: install serial picamera2 requests base64
 - scaricare il software dal repository GITHUB
 - sudo install git
 - git clone https://github.com/idamato/birdgarden/
 - modificare i permessi ai file scaricati con chmod a+x birdgarden/*.sh birdgarden/*.py
-- modificare username e password e identificativo TAG con la CPUID nel file wordpress_playground.py secondo le indicazioni ricevute al momento dell'adesione al progetto.
+- modificare username e password e identificativo TAG con la CPUID nel file wordpress_playground.py secondo le indicazioni ricevute al momento dell'adesione al progetto. (Viene creato un account all'interno del portale Birdgarden 2.0 con le credenziali per la pubblicazione delle foto/video dal dispositivo)
 - creare il link simbolico al file photo.service di avvio del servizio al boot:
- ln -s /etc/systemd/system/photo.service /home/birdgarden/scripts/photo.service
+  sudo ln -s /home/ilfarodargento/birdgarden/photo.service /etc/systemd/system/photo.service
 - configurare il comando a tempo (crontab -e) aggiungendo in fondo la seguente riga:
  * * * * * /home/ilfarodargento/birdgarden/sendphoto.sh >> /home/ilfarodargento/logs/cron.log 2>&1
-- esegure il test del focus della fotocamera sulla vostra installazione con lo script test-camera-focus.py
+- dalla /home/ilfarodargento creare la directory per i log con: mkdir logs
+- esegure il test del focus della fotocamera sulla vostra installazione eseguendo il comando: python3 test-camera-focus.py
 - collegare anche il dispositivo micro:bit caricandovi il codice serial_data_logger.py tramite il sito makecode.microbit.org
 - creare le due directory che conterranno le foto scattate e quelle spedite e i log
-- mkdir departures sent logs
+- mkdir departures sent
 
 
 
