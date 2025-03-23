@@ -26,21 +26,25 @@ print("URL: " + url)
 print("Media: " + media)
 print("Filename: " + filename)
 
+values = filename.split('_')
+progressivo, luce, temperatura, audio, sonar = [int(value) for value in values]
+print(progressivo, luce, temperatura, audio, sonar)
+
 #authentication
 wordpress_head_post = wordpress_header(wp_user, wp_pw)[0]
 wordpress_auth_media = wordpress_header(wp_user, wp_pw)[1] 
 
 ext = os.path.splitext(media)[-1].lower()
 if ext == ".jpg":
-     title = "Foto scattata dal Birdgarden " + seriale + " con timestamp " + datafile
-     body = "<a href=\"https://www.webradiofaro.it/birdgarden/wp-content/uploads/" + filename + "\">Immagine originale</a>"
+     title = "Foto dal Birdgarden " + wp_user + " il " + datafile
+     body = "<a href=\"https://www.webradiofaro.it/birdgarden/wp-content/uploads/" + filename + "\">Immagine originale</a><p>Temperatura: " + temperatura + "<br>Luce: " + luce + "<br>Rumore: " + audio + "<br>Distanza: " + sonar + "</p>" 
      #image upload
      media_id = postmedia(url, media, filename, wordpress_auth_media)
      #post creation
      create_wordpress_post(url, title, body, media_id, categories, tags, wordpress_head_post)
 elif ext == ".mp4":
-     title = "Video scattato dal Birdgarden " + seriale + " con timestamp " + datafile
-     body = "<figure class=\"wp-block-video\"><video controls src=\"https://www.webradiofaro.it/birdgarden/wp-content/uploads/" + filename + "\" type=\"video/mp4\"></video></figure>"
+     title = "Video dal Birdgarden " + wp_user + " il " + datafile
+     body = "<figure class=\"wp-block-video\"><video controls src=\"https://www.webradiofaro.it/birdgarden/wp-content/uploads/" + filename + "\" type=\"video/mp4\"></video></figure><p>Temperatura: " + temperatura + "<br>Luce: " + luce + "<br>Rumore: " + audio + "<br>Distanza: " + sonar + "</p>" 
      #video upload
      media_id = postmedia4video(url, media, filename, wordpress_auth_media)
      #post creation
