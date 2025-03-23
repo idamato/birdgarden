@@ -8,6 +8,7 @@ Per l'inizializzazione del dispositivo al primo utilizzo sono necessarie alcune 
 Per il collegamento attraverso la porta seriale è necessario abilitarne l'accesso nel file config.txt inserendo la seguente riga: enable_uart=1
 Nelle versioni più recenti del sistema Raspian OS non esiste un utente preconfigurato con cui eseguire il login tuttavia tramie il software Raspberry Pi Imager è possibile definire le principali configurazioni prima ancora del primo avvio, cosa che in questo progetto abbiamo fatto per voi. Per i sistemi Linux Debian è sufficiente digitare il comando: sudo apt install rpi-imager, mentre per Windows si può scaricare l'installer direttamente dal sito raspberrypi.com
 Per il collegamento via seriale abbiamo utilizzato il comando: tio /dev/ttyUSB0, dopo aver verificato che il device ttyUSB0 fosse correttamente associato al cavo USB-to-serial inserito, per mezzo del comando: sudo dmesg, che fornisce le seguenti informazioni:
+
 [ 7849.113480] usb 1-2: new full-speed USB device number 13 using xhci_hcd
 [ 7849.240467] usb 1-2: New USB device found, idVendor=067b, idProduct=2303, bcdDevice= 4.00
 [ 7849.240514] usb 1-2: New USB device strings: Mfr=1, Product=2, SerialNumber=0
