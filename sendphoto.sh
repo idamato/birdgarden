@@ -2,7 +2,7 @@
 
 WORKDIR=/home/ilfarodargento
 CPUID=$(cat /proc/cpuinfo | grep Serial | cut -f2 -d":"|awk '{$1=$1};1')
-DATA=$(date +"%Y%m%d%H%M%S")
+DATA=$(date +"%Y/%m/%d - %H:%M:%S")
 
 cd $WORKDIR/departures
 
