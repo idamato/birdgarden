@@ -44,7 +44,8 @@ Eseguire le operazioni seguenti:
 - esegure il test del focus della fotocamera sulla vostra installazione eseguendo il comando: python3 test-camera-focus.py
 - collegare anche il dispositivo micro:bit caricandovi il codice serial_data_logger.py tramite il sito makecode.microbit.org
 
-
+Se si desidera modificare la configurazione del WiFi si può procedere nel modo seguente:
+- eseguire il comando: sudo nmtui, ed abilitare la rete wifi di interesse
 
 
 
