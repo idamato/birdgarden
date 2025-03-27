@@ -7,4 +7,4 @@ User=ilfarodargento
 ExecStart=/usr/bin/bash -c '/usr/bin/python /home/ilfarodargento/birdgarden/serialandphoto.py' >>/home/ilfarodargento/logs/serialandphoto.log 
 
 [Install]
-WantedBy=default.target
+WantedBy=graphical.target
