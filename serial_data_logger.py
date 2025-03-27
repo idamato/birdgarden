@@ -24,7 +24,7 @@ def rileva():
 def on_forever():
     global sonar2, trig0
     sonar2 = sonar.ping(DigitalPin.P0, DigitalPin.P1, PingUnit.CENTIMETERS)
-    if sonar2 < 20:
+    if sonar2 < 15:
         trig0 = 1
         basic.show_number(trig0)
         rileva()
