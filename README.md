@@ -34,9 +34,10 @@ Eseguire le operazioni seguenti:
 - modificare i permessi ai file scaricati con chmod a+x birdgarden/*.sh birdgarden/*.py
 - modificare username e password e identificativo TAG con la CPUID nel file wordpress_playground.py secondo le indicazioni ricevute al momento dell'adesione al progetto. (Viene creato un account all'interno del portale Birdgarden 2.0 con le credenziali per la pubblicazione delle foto/video dal dispositivo)
 - creare il link simbolico al file photo.service di avvio del servizio al boot:
-  sudo ln -s /home/ilfarodargento/birdgarden/photo.service /etc/systemd/system/photo.service
-  sudo systemctl enable photo.service
-  sudo systemctl start photo.service (comando per l'avvio manuale)
+  sudo ln -s /home/ilfarodargento/birdgarden/photo.service /etc/systemd/system/photo.service ; 
+  sudo systemctl enable photo.service ; 
+  sudo systemctl start photo.service (comando per l'avvio manuale) ;
+  sudo journalctl --unit=photo.service (per verificare il log delle esecuzioni precedenti)
 - configurare il comando a tempo (crontab -e) aggiungendo in fondo la seguente riga:
   "* * * * * /home/ilfarodargento/birdgarden/sendphoto.sh >> /home/ilfarodargento/logs/cron.log 2>&1"
 - dalla /home/ilfarodargento creare le directory per i log e per le foto da spedire e spedite con: mkdir logs departures sent
