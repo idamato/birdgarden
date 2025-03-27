@@ -3,6 +3,7 @@
 Description=Make photos at serial event
 
 [Service]
+User=ilfarodargento
 ExecStart=/usr/bin/bash -c '/usr/bin/python /home/ilfarodargento/birdgarden/serialandphoto.py' >>/home/ilfarodargento/logs/serialandphoto.log 
 
 [Install]
