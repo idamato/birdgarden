@@ -17,7 +17,6 @@ Per il collegamento via seriale abbiamo utilizzato il comando: tio /dev/ttyUSB0,
 [ 7849.245418] pl2303 1-2:1.0: pl2303 converter detected
 [ 7849.248483] usb 1-2: pl2303 converter now attached to ttyUSB0
 
-
 Quindi occorre scaricare ed installare Raspberry Pi OS sulla scheda SSD utilizzando il software Raspberry Pi Imager, completando la configurazione iniziale dell’utente e del wi-fi. Inserire successivamente la scheda SSD nel Raspberry Pi Zero 2W, collegarvi una tastiera e maouse tramite il cavetto USB, il monitor con adattatore mini HDMI (in alternativa si utilizzi la connessione seriale) ed il camera module con il cavo apposito.
 Eseguire le operazioni seguenti:
 
@@ -47,6 +46,8 @@ Eseguire le operazioni seguenti:
 Se si desidera modificare la configurazione del WiFi si può procedere nel modo seguente:
 - eseguire il comando: sudo nmtui, ed abilitare la rete wifi di interesse
 
-
+Ci sono inoltre una serie di aspetti di configurazione che sono stati curati all'interno del portale https://www.webradiofaro.it/birdgarden/ che utilizza Wordpress.
+In particolare deve essere creato un utente/ruolo specifico associato al dispositivo in modo che nello stesso portale possano concorrere le pubblicazioni di tutti i dispositivi.
+Oltre all'utente deve essere anche creata una chiave applicativa legata all'applicazione Birdgarden e con essa si avranno le credenziali da inserire nello scirpt Python per l'invio dati.
 
            
