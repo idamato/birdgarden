@@ -39,7 +39,7 @@ Eseguire le operazioni seguenti:
   sudo systemctl start photo.service (comando per l'avvio manuale) ;
   sudo journalctl --unit=photo.service (per verificare il log delle esecuzioni precedenti)
 - configurare il comando a tempo (crontab -e) aggiungendo in fondo la seguente riga:
-  "* * * * * /home/ilfarodargento/birdgarden/sendphoto.sh >> /home/ilfarodargento/logs/cron.log 2>&1"
+  30 * * * * /home/ilfarodargento/birdgarden/sendphoto.sh >> /home/ilfarodargento/logs/cron.log 2>&1
 - dalla /home/ilfarodargento creare le directory per i log e per le foto da spedire e spedite con: mkdir logs departures sent
 - esegure il test del focus della fotocamera sulla vostra installazione eseguendo il comando: python3 test-camera-focus.py
 - collegare anche il dispositivo micro:bit caricandovi il codice serial_data_logger.py tramite il sito makecode.microbit.org
