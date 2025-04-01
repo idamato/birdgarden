@@ -9,7 +9,30 @@ import subprocess
 # from gpiozero import LED
 # from gpiozero import MotionSensor
 
-ser = serial.Serial('/dev/ttyACM0', 115200, timeout=1)
+# funzione per la gestione della lettura dei dati dalla porta seriale
+porta = '/dev/ttyACM0'
+baudrate = 115200
+
+def leggi_dati_seriale(porta, baudrate):
+    while True:
+        try:
+            # Apertura della connessione seriale
+            with serial.Serial(porta, baudrate, timeout=1) as ser:
+                # print(f"Connesso a {porta} a {baudrate} baud.")
+                while True:
+                    # Lettura dei dati
+                    dati = ser.readline().decode('utf-8').rstrip()
+                    if dati:
+                        return dati
+        
+        except serial.SerialException as e:
+            # Gestione errore di connessione
+            print(f"Errore di connessione: {e}")
+            print("Tentativo di riconnessione tra 5 minuti...")
+            time.sleep(300)  # Attendi 5 minuti e riprova
+
+# ser = serial.Serial('/dev/ttyACM0', 115200, timeout=1)
+
 camera = Picamera2()
 # l'anodo del LED (gamba lunga) è collegato al GPIO 17
 # fra il catodo (gamba corta) e GROUND è necessario collegare una resistenza di almeno 100 ohm
@@ -39,8 +62,9 @@ print ("Hello this is the start!")
 rpihalt = np.array([0,0,0,0,0])
 
 while True:
-    rcv = ser.readline()
-    cmd = rcv.decode('utf-8').rstrip()
+    # rcv = ser.readline()
+    # cmd = rcv.decode('utf-8').rstrip()
+    cmd = leggi_dati_seriale(porta, baudrate)
     values = cmd.split(',')
     print(values)
     if len(values) == 5: 
@@ -64,6 +88,7 @@ while True:
         filename = "/home/ilfarodargento/departures/" + str(id) + "_" + str(luce) + "_" + str(temperatura) + "_" + str(audio) + "_" + str(sonar)
         # flash_led.on()
         camera.set_controls({"AfMode": controls.AfModeEnum.Continuous, "AfSpeed": controls.AfSpeedEnum.Fast})
+        # attendo un secondo per la messa a fuoco
         sleep(1)
         # esegue la foto
         camera.switch_mode_and_capture_file(capture_config, filename + ".jpg")
