@@ -29,7 +29,7 @@ def leggi_dati_seriale(porta, baudrate):
             # Gestione errore di connessione
             print(f"Errore di connessione: {e}")
             print("Tentativo di riconnessione tra 5 minuti...")
-            time.sleep(300)  # Attendi 5 minuti e riprova
+            sleep(300)  # Attendi 5 minuti e riprova
 
 # ser = serial.Serial('/dev/ttyACM0', 115200, timeout=1)
 
