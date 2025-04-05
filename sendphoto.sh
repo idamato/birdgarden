@@ -1,9 +1,27 @@
 #!/usr/bin/bash
-COUNT=$(ps -ef|grep sendphoto.sh|grep -v grep|wc -l)
-if [ $COUNT -gt 2 ]; then
-  echo "processo già in esecuzione... esco"
-  exit 1
+
+# Nome del file di lock
+LOCKFILE="/tmp/sendphoto.lock"
+
+# Funzione per pulire il file di lock
+cleanup() {
+    rm -f "$LOCKFILE"
+}
+
+# Controlla se il file di lock esiste e se il processo è ancora attivo
+if [ -e "$LOCKFILE" ]; then
+    LOCKPID=$(cat "$LOCKFILE")
+    if ps -p "$LOCKPID" > /dev/null 2>&1; then
+        echo "Lo script è già in esecuzione con PID: $LOCKPID. Termino."
+        exit 1
+    else
+        echo "Rilevato file di lock obsoleto. Lo rimuovo e procedo."
+        rm -f "$LOCKFILE"
+    fi
 fi
+
+# Crea un file di lock con il PID corrente
+echo $$ > "$LOCKFILE"
 
 WORKDIR=/home/ilfarodargento
 CPUID=$(cat /proc/cpuinfo | grep Serial | cut -f2 -d":"|awk '{$1=$1};1')
@@ -22,6 +40,10 @@ for item in $(ls -1); do
   else
     # linea internet assente o non funzionante
     echo "non trovo connessione con internet"
+    # Rimuoviamo il file di lock alla fine dello script
+    trap cleanup EXIT
     exit 1
   fi
 done
+# Rimuoviamo il file di lock alla fine dello script
+trap cleanup EXIT
