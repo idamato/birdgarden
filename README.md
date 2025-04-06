@@ -17,7 +17,8 @@ Per il collegamento via seriale abbiamo utilizzato il comando: tio /dev/ttyUSB0,
 [ 7849.245418] pl2303 1-2:1.0: pl2303 converter detected
 [ 7849.248483] usb 1-2: pl2303 converter now attached to ttyUSB0
 
-Quindi occorre scaricare ed installare Raspberry Pi OS sulla scheda SSD utilizzando il software Raspberry Pi Imager, completando la configurazione iniziale dell’utente e del wi-fi. Inserire successivamente la scheda SSD nel Raspberry Pi Zero 2W, collegarvi una tastiera e maouse tramite il cavetto USB, il monitor con adattatore mini HDMI (in alternativa si utilizzi la connessione seriale) ed il camera module con il cavo apposito.
+Quindi occorre scaricare ed installare Raspberry Pi OS sulla scheda SSD utilizzando il software Raspberry Pi Imager, completando la configurazione iniziale dell’utente e del wi-fi. Inserire successivamente la scheda SSD nel Raspberry Pi Zero 2W, collegarvi una tastiera e maouse tramite il cavetto USB, il monitor con adattatore mini HDMI (in alternativa si utilizzi la connessione seriale) ed il camera module con il cavo apposito. Tenete a mente che durante il primo avvio il sistema opera delle configurazioni automatiche ed esegue anche un riavvio automatico, quindi impiega necessariamente più tempo a partire rispetto ad una normale procedura di avvio, come potranno essere quelle successive. Se tutto è andato a buon fine avrete a video il desktop del sistema Raspian OS (derivato da Linux Debian) e potrete aprire una finestra terminale per proseguire con le attività di configurazione descritte nel seguito.
+
 Eseguire le operazioni seguenti:
 
 - eseguire il login con username e password impostati (l'importante è che la home directory si chiami /home/ilfarodargento)
