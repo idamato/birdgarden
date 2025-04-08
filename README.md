@@ -31,7 +31,7 @@ Eseguire le operazioni seguenti:
 - scaricare il software dal repository GITHUB
 - sudo install git
 - git clone https://github.com/idamato/birdgarden/
-- modificare i permessi ai file scaricati con chmod a+x birdgarden/\*.sh birdgarden/\*.py
+- modificare i permessi ai file scaricati con chmod a+x birdgarden/\*.sh birdgarden/\*.py birdgarden/photo.service
 - modificare username e password e identificativo TAG con la CPUID nel file wordpress_playground.py secondo le indicazioni ricevute al momento dell'adesione al progetto. (Viene creato un account all'interno del portale Birdgarden 2.0 con le credenziali per la pubblicazione delle foto/video dal dispositivo)
 - creare il link simbolico al file photo.service di avvio del servizio al boot:
   sudo ln -s /home/ilfarodargento/birdgarden/photo.service /etc/systemd/system/photo.service ; 
