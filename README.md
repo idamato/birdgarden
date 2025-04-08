@@ -27,7 +27,7 @@ Eseguire le operazioni seguenti:
 - se le librerie python-picamera2 non sono installate potete usare il comando: sudo apt install -y python3-picamera2
 - se le librerie per il video non sono installate potete usare il comando: sudo apt install -y ffmpeg
 - installare le librerie Python necessarie
-- la maggior parte delle librerie python3 sono installate, occorrono le seguenti: install serial picamera2 requests base64
+- la maggior parte delle librerie python3 sono installate, occorre ancora il comando seguente per la libreria seriale: sudo apt install python3-serial
 - scaricare il software dal repository GITHUB
 - sudo install git
 - git clone https://github.com/idamato/birdgarden/
