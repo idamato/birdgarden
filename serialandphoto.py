@@ -5,7 +5,7 @@ from picamera2 import Picamera2
 from libcamera import controls
 import serial
 import numpy as np
-import subprocess
+import os
 # from gpiozero import LED
 # from gpiozero import MotionSensor
 
@@ -32,7 +32,21 @@ def leggi_dati_seriale(porta, baudrate):
             sleep(300)  # Attendi 5 minuti e riprova
 
 # ser = serial.Serial('/dev/ttyACM0', 115200, timeout=1)
+# la funzione verifica se è arrivato il comando di shutdown
+def verifica_halt(array):
+    if len(array) == 5 and all(elemento == 0 for elemento in array):
+        return True
+    return False
 
+# funzione che impartisce il comando di chiusura del sistema
+def arresta_sistema():
+    try:
+        # Esegue il comando di halt
+        os.system("sudo halt")
+    except Exception as e:
+        print(f"Si è verificato un errore: {e}")
+
+# inizializza la fotocamera
 camera = Picamera2()
 # l'anodo del LED (gamba lunga) è collegato al GPIO 17
 # fra il catodo (gamba corta) e GROUND è necessario collegare una resistenza di almeno 100 ohm
@@ -70,15 +84,10 @@ while True:
     if len(values) == 5: 
       luce, temperatura, audio, pin0, sonar = [int(value) for value in values]
       print(luce, temperatura, audio, pin0, sonar)
-      need_halt = np.array_equal(rpihalt, values)
-      if need_halt:
+      if verifica_halt(values):
         try:
           # Execute the sudo halt command
-          subprocess.run(['sudo', 'halt'], check=True)
-        except subprocess.CalledProcessError as e:
-          print(f"Command halt failed with error: {e}")
-        except Exception as e:
-          print(f"An unexpected error occurred: {e}")
+          arresta_sistema()
       if pin0:
         id += 1
         print('fare foto!')
