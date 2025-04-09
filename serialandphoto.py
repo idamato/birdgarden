@@ -4,7 +4,6 @@ from time import sleep
 from picamera2 import Picamera2
 from libcamera import controls
 import serial
-import numpy as np
 import os
 # from gpiozero import LED
 # from gpiozero import MotionSensor
@@ -34,7 +33,7 @@ def leggi_dati_seriale(porta, baudrate):
 # ser = serial.Serial('/dev/ttyACM0', 115200, timeout=1)
 # la funzione verifica se è arrivato il comando di shutdown
 def verifica_halt(array):
-    if len(array) == 5 and all(elemento == 0 for elemento in array):
+    if len(array) == 5 and all(elemento == '0' for elemento in array):
         return True
     return False
 
@@ -42,7 +41,7 @@ def verifica_halt(array):
 def arresta_sistema():
     try:
         # Esegue il comando di halt
-        os.system("sudo halt")
+        os.system("sudo shutdown -h now")
     except Exception as e:
         print(f"Si è verificato un errore: {e}")
 
@@ -85,6 +84,7 @@ while True:
       print(luce, temperatura, audio, pin0, sonar)
       if verifica_halt(values):
          # Execute the sudo halt command
+         print('devo arrestare il sistema')
          arresta_sistema()
       if pin0:
         id += 1
