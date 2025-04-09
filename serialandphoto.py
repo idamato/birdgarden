@@ -73,7 +73,6 @@ id = 0
 # camera.configure(capture_config)
 
 print ("Hello this is the start!")
-rpihalt = np.array([0,0,0,0,0])
 
 while True:
     # rcv = ser.readline()
@@ -85,9 +84,8 @@ while True:
       luce, temperatura, audio, pin0, sonar = [int(value) for value in values]
       print(luce, temperatura, audio, pin0, sonar)
       if verifica_halt(values):
-        try:
-          # Execute the sudo halt command
-          arresta_sistema()
+         # Execute the sudo halt command
+         arresta_sistema()
       if pin0:
         id += 1
         print('fare foto!')
