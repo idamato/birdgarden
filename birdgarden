@@ -1,0 +1,9 @@
+/home/ilfarodargento/logs/*.log {
+	weekly
+	rotate 54
+	compress
+	delaycompress
+	missingok
+	notifempty
+	create 644 ilfarodargento ilfarodargento
+}
