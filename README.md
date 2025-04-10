@@ -41,6 +41,7 @@ Eseguire le operazioni seguenti:
 - configurare il comando a tempo (crontab -e) aggiungendo in fondo la seguente riga:
   30 * * * * /home/ilfarodargento/birdgarden/sendphoto.sh >> /home/ilfarodargento/logs/cron.log 2>&1
 - dalla /home/ilfarodargento creare le directory per i log e per le foto da spedire e spedite con: mkdir logs departures sent
+- per la rotazione dei log installiamo il file di configurazione: sudo cp birdgarden/birdgarden /etc/logrotate.d/
 - esegure il test del focus della fotocamera sulla vostra installazione eseguendo il comando: python3 test-camera-focus.py, tenete presente che se state utilizzando il terminale senza grafica dovrete prima modificare lo script impostando la preview a False.
 - collegare anche il dispositivo micro:bit caricandovi il codice serial_data_logger.py tramite il sito makecode.microbit.org
 
