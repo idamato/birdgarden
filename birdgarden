@@ -1,4 +1,4 @@
-/home/ilfarodargento/logs/*.log {
+/home/ilfarodargento/logs/cron.log /home/ilfarodargento/logs/serialandphoto.log {
 	weekly
 	rotate 54
 	compress
