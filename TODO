@@ -1,0 +1,209 @@
+Migliorare la comunicazione via seriale e renderla bidirezionale:
+-----------------------------------------------------------------
+# Funzione per calcolare il checksum
+def calculate_checksum(message):
+"""
+Calcola il checksum sommando i valori dei byte della stringa e applicando modulo 256.
+Questo aiuta a verificare l'integrità del messaggio trasmesso.
+"""
+return sum(message.encode()) % 256
+
+
+# Server 1 (Device A)
+import machine
+
+# Configura la porta seriale per la comunicazione
+uart = machine.UART(1, baudrate=9600, tx=17, rx=16)
+
+def send_message(message):
+"""
+Invia un messaggio al Server 2 con il checksum.
+Aspetta di ricevere il checksum calcolato da Server 2 e confronta i valori.
+Se il checksum non corrisponde, ritrasmette il messaggio.
+"""
+checksum = calculate_checksum(message)
+full_message = f"{message}|{checksum}\n"
+
+while True:
+uart.write(full_message) # Invia il messaggio
+response = uart.readline() # Attende il checksum di conferma
+
+if response:
+received_checksum = int(response.decode().strip()) # Converti il valore ricevuto
+if received_checksum == checksum:
+print("Messaggio confermato da Server 2, nessun errore.")
+break
+else:
+print("Errore nella trasmissione, ritrasmissione in corso...")
+
+while True:
+message = "Hello from Server 1"
+send_message(message)
+
+# Riceve un messaggio da Server 2
+response = uart.readline()
+if response:
+received_msg, received_checksum = response.decode().strip().split("|")
+received_checksum = int(received_checksum)
+
+if received_checksum == calculate_checksum(received_msg):
+print(f"Server 1 ha ricevuto correttamente: {received_msg}")
+uart.write(f"{received_checksum}\n") # Invio checksum al mittente
+
+
+# Server 2 (Device B)
+import machine
+
+# Configura la porta seriale per la comunicazione
+uart = machine.UART(1, baudrate=9600, tx=17, rx=16)
+
+def send_message(message):
+"""
+Invia un messaggio al Server 1 con il checksum.
+Aspetta di ricevere il checksum di conferma dal Server 1 e confronta i valori.
+Se il checksum non corrisponde, ritrasmette il messaggio.
+"""
+checksum = calculate_checksum(message)
+full_message = f"{message}|{checksum}\n"
+
+while True:
+uart.write(full_message) # Invia il messaggio
+response = uart.readline() # Attende il checksum di conferma
+
+if response:
+received_checksum = int(response.decode().strip()) # Converti il valore ricevuto
+if received_checksum == checksum:
+print("Messaggio confermato da Server 1, nessun errore.")
+break
+else:
+print("Errore nella trasmissione, ritrasmissione in corso...")
+
+while True:
+# Riceve un messaggio da Server 1
+response = uart.readline()
+if response:
+received_msg, received_checksum = response.decode().strip().split("|")
+received_checksum = int(received_checksum)
+
+if received_checksum == calculate_checksum(received_msg):
+print(f"Server 2 ha ricevuto correttamente: {received_msg}")
+uart.write(f"{received_checksum}\n") # Invio checksum al mittente
+
+message = "Hello from Server 2"
+send_message(message)
+
+
+PROCEDURA PER L'AGGIORNAMENTO AUTOMATICO DEL SISTEMA (da mettere a crontab o all'avvio)
+---------------------------------------------------------------------------------------
+Prendere spunto dal seguente codice:
+update () {
+  local git_ref_url='https://api.github.com/repos/arvidjaar/bootinfoscript/git/refs/heads/master'
+  local git_commit_url='https://api.github.com/repos/arvidjaar/bootinfoscript/git/commits'
+  local git_contents_url='https://github.com/arvidjaar/bootinfoscript/raw/master/bootinfoscript'
+
+  # Check if date is available.
+  if [ $(type date > /dev/null 2>&1 ; echo $?) -ne 0 ] ; then
+     echo '"date" could not be found.' >&2;
+     exit 1;
+  fi
+
+  # Get current UTC time in YYYY-MM-DD-hh:mm:ss format.
+  UTC_TIME=$(date --utc "+%Y-%m-%d %T");
+
+  if [ ! -z "$1" ] ; then
+     GIT_BIS_FILENAME="$1";
+  else
+     GIT_BIS_FILENAME="${HOME}/bootinfoscript_${UTC_TIME/ /_}"
+  fi
+
+  # Check if wget or curl is available
+  if [ $(type wget > /dev/null 2>&1 ; echo $?) -eq 0 ] ; then
+     printf '\nDownloading last development version of Boot Info Script from git:\n\n';
+     LAST_GIT_COMMIT_ID=$(wget -O - "${git_ref_url}" | sed -ne 's/^.*"sha": "\(.*\)".*$/\1/p');
+     LAST_GIT_COMMIT=$(wget -O - "${git_commit_url}/$LAST_GIT_COMMIT_ID");
+
+     wget -O "${GIT_BIS_FILENAME}" "${git_contents_url}";
+  elif [ $(type curl > /dev/null 2>&1 ; echo $?) -eq 0 ] ; then
+     printf 'Downloading last development version of Boot Info Script from git:\n\n';
+     LAST_GIT_COMMIT_ID=$(curl "${git_ref_url}" | sed -ne 's/^.*"sha": "\(.*\)".*$/\1/p');
+     LAST_GIT_COMMIT=$(curl "${git_commit_url}/$LAST_GIT_COMMIT_ID");
+
+     curl -o "${GIT_BIS_FILENAME}" "${git_contents_url}";
+  else
+     printf '"wget" or "curl" could not be found.\nInstall at least one of them and try again.\n' >&2;
+     exit 1;
+  fi
+
+  # First date is Author, second date is Commit
+  LAST_GIT_COMMIT_DATE=$(echo "${LAST_GIT_COMMIT}" | sed -ne 's/^[[:space:]]*"date": "\(.*\)"[[:space:]]*$/\1/p' | tail -1);
+  LAST_GIT_COMMIT_SHORTLOG=$(echo "${LAST_GIT_COMMIT}" | sed -n -e '/^[[:space:]]*"message":/ { s/^[[:space:]]*"message": "\(.*\)",[[:space:]]*$/\1/ ; s/\\n.*$// ; p }');
+
+  # Set the retrieval date in just downloaded script.
+  sed -i -e "4,0 s@LAST_GIT_COMMIT_SHORTLOG='';@LAST_GIT_COMMIT_SHORTLOG='${LAST_GIT_COMMIT_SHORTLOG}';@" \
+	 -e "5,0 s/LAST_GIT_COMMIT_DATE='';/LAST_GIT_COMMIT_DATE='${LAST_GIT_COMMIT_DATE}';/" \
+	 "${GIT_BIS_FILENAME}";
+
+  printf '\nThe development version of Boot Info Script is saved as:\n"%s"\n\n' "${GIT_BIS_FILENAME}";
+  exit 0;
+}
+
+
+
+## Display version, release, last git commit and git retrieval date of the script when asked: ##
+#
+#   ./bootinfoscript -v
+#   ./bootinfoscript -V
+#   ./bootinfoscript --version 
+
+version () {
+  printf '\nBoot Info Script version: %s\nRelease date:             %s' "${VERSION}" "${RELEASE_DATE}";
+
+  if [ ! -z "${LAST_GIT_COMMIT_SHORTLOG}" ] ; then
+     printf '\nLast git commit:          %s\nCommit date:              %s' \
+            "${LAST_GIT_COMMIT_SHORTLOG}" "${LAST_GIT_COMMIT_DATE}";
+  fi
+
+  printf '\n\n';
+
+  exit 0;
+}
+
+
+process_args () {
+  if [ ${#@} -ge 1 ] ; then
+     # Process arguments.
+     case "$1" in
+	-g	  ) gzip_output=1; if [ ! -z "$2" ] ; then LogFile_cmd="$2"; fi;;
+	--gzip	  ) gzip_output=1; if [ ! -z "$2" ] ; then LogFile_cmd="$2"; fi;;
+	-h	  ) help;;
+	-help	  ) help;;
+	--help	  ) help;;
+	--stdout  ) stdout_output=1;;
+	--update  ) update "$2";;
+	-v	  ) version;;
+	-V	  ) version;;
+	--version ) version;;
+	-*	  ) help;;
+	*	  ) LogFile_cmd="$1";;
+     esac
+  fi
+}
+
+## Get arguments passed to the script. ##
+
+process_args ${@};
+
+
+
+## Display version number, release and git retrieval date. ##
+
+printf '\nBoot Info Script %s      [%s]' "${VERSION}" "${RELEASE_DATE}";
+
+if [ ! -z "${LAST_GIT_COMMIT_SHORTLOG}" ] ; then
+   printf '\n  Last git commit:         %s\n  Commit date:             %s' \
+          "${LAST_GIT_COMMIT_SHORTLOG}" "${LAST_GIT_COMMIT_DATE}";
+fi
+
+printf '\n\n';
+
+
