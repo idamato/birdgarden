@@ -52,4 +52,4 @@ Ci sono inoltre una serie di aspetti di configurazione che sono stati curati all
 In particolare deve essere creato un utente/ruolo specifico associato al dispositivo in modo che nello stesso portale possano concorrere le pubblicazioni di tutti i dispositivi.
 Oltre all'utente deve essere anche creata una chiave applicativa legata all'applicazione Birdgarden e con essa si avranno le credenziali da inserire nello scirpt Python per l'invio dati.
 
-           
+-
