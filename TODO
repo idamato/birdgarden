@@ -1,3 +1,14 @@
+Realizzare il sistema di monitoraggio attraverso l'esecuzione dello script a crontab
+------------------------------------------------------------------------------------
+Si devono rilevare dati di funzionamento dell'hardware
+- occupazione filesystem
+- uptime
+- utilizzo medio della CPU
+Si devono rilevare informazioni riferite alla presenza di foto e filmati realizzati dal dispositivo
+- numero di foto e video nella directory sent e departures
+- 
+
+
 Migliorare la comunicazione via seriale e renderla bidirezionale:
 -----------------------------------------------------------------
 # Funzione per calcolare il checksum
