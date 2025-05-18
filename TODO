@@ -182,7 +182,7 @@ version () {
 
 process_args () {
   if [ ${#@} -ge 1 ] ; then
-     # Process arguments.
+     # Processa gli argomenti
      case "$1" in
 	-g	  ) gzip_output=1; if [ ! -z "$2" ] ; then LogFile_cmd="$2"; fi;;
 	--gzip	  ) gzip_output=1; if [ ! -z "$2" ] ; then LogFile_cmd="$2"; fi;;
