@@ -1,0 +1,67 @@
+### Come misurare il consumo energetico di un dispositivo microcontrollore per il dimensionamento di batteria e pannello solare
+
+Prima di poter calcolare le dimensioni del **pannello solare** e della **batteria**, è fondamentale determinare il consumo energetico del dispositivo. Questo è il primo passo essenziale nella costruzione di un sistema alimentato a energia solare.
+
+### Configurazione e requisiti
+
+Per misurare il consumo medio di energia di un dispositivo microcontrollore con Wifi, come un nodo **Rapberry pi zero 2W**, è necessario disporre di alcuni strumenti e conoscenze.
+
+#### **Strumento di misurazione dell'energia**
+È necessario un modo per misurare la potenza. Può essere un **alimentatore da banco** con letture di tensione e amperaggio, oppure un **misuratore di potenza USB** dedicato. È fondamentale misurare **volt e ampere** oppure **watt nel tempo** (cioè non solo istantaneamente, ma tenendo traccia dell'energia consumata nel tempo). Inoltre, bisogna verificare se il misuratore ha la risoluzione necessaria per misurare valori bassi, come 0.005A a 5V. Alcuni multimetri non sono in grado di registrare il consumo energetico totale nel tempo.
+
+#### **Cosa stiamo misurando?**
+Un **watt** è l'unità di misura della potenza elettrica. Se si misura la tensione e la corrente, si ottengono i watt con una semplice formula:  
+**Volt × Ampere = Watt**  
+Ad esempio:  
+5V × 50mA = 250mW (oppure 5V × 0.05A = 0.25W).  
+
+250mW rappresentano il consumo di energia in un **istante**, ma per valutare il consumo reale bisogna misurare l'energia nel tempo (**wattora**).  
+Se il dispositivo consuma **250mW per un’ora**, il consumo in 24 ore sarà:  
+**24h × 250mW = 6000mWh** (oppure **6Wh**).
+
+### **Ciclo di lavoro**
+I dispositivi radio consumano meno energia quando **ricevono** e molta di più quando **trasmettono**. Il **ciclo di lavoro** indica la percentuale di tempo in cui il dispositivo trasmette: 5%, 10%, 25%? Dipende dall’utilizzo.  
+
+Per ottenere una misura reale, è meglio **testare il consumo** per almeno un’ora, idealmente tra **2 e 6 ore** per una maggiore accuratezza.
+
+### **Condizioni di test**
+I nodi **Raspberry pi zero 2W** collegati ad una rete WiFi trasmettono pacchetti di dati a intervalli regolari, anche quando non si inviano messaggi. Questi pacchetti servono per mantenere la rete attiva. Inoltre, il collegamento seriale (via USB) al **Micro:bit** consuma ulteriore energia.
+
+### **Test simulato**
+Se il traffico di foto e video trasmessi è basso (2-5 al giorno), potrebbe non influenzare molto il consumo. 
+
+### **Condizioni di test realistiche**
+Per un test realistico, prendiamo in considerazione circa 10 invii di foto e video al giorno. Ecco un esempio di configurazione:
+
+- **1 nodo Raspberry pi zero 2W** collegato al WiFi.
+- **1 nodo Micro:bit** collegato via seriale al **Raspberry pi zero 2W** che rileva a ciclo continuo il segnale inviato con il sensore sonar.
+
+Avvia il test e **segna l'orario di inizio**. È utile farlo **all’ora esatta** o a intervalli di 15 minuti, per semplificare i calcoli. **Resetta il misuratore di potenza** prima di avviare la misurazione.
+
+### **Risultati**
+I risultati dovrebbero essere in **wattora (Wh)**. Per ottenere il consumo medio:
+
+\[
+\frac{\text{Wattora misurati}}{\text{Durata del test (h)}}
+\]
+
+Se il misuratore fornisce **Ampere-ora (Ah)**, bisogna convertirlo in **wattora**:
+
+\[
+Volt \times Ampere-ora = Wattora
+\]
+
+Esempio:  
+Un test a **5.1V** per **3 ore** con un consumo di **142mAh**:
+
+\[
+5.1V \times 142mAh = 724.2mWh
+\]
+
+Dividendo per la durata del test:  
+
+\[
+\frac{724.2mWh}{3h} = 241.4mW
+\]
+
+Questo valore rappresenta il **consumo energetico medio** e può essere usato per calcolare il **dimensionamento del pannello solare** e del power bank.

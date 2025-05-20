@@ -23,7 +23,7 @@ Eseguire le operazioni seguenti:
 
 - eseguire il login con username e password impostati (l'importante è che la home directory si chiami /home/ilfarodargento)
 - eseguire l’aggiornamento di Linux con i comandi:
-- sudo apt update && sudo apt upgrade (occorre rispondere con Y confermando l'attività - questo task può durare anche 30 minuti)
+- sudo apt update -y && sudo apt upgrade -y (occorre rispondere con Y confermando l'attività - questo task può durare anche 30 minuti). Nota bene che se è stata rilasciata una nuova versione di Raspbian OS è possibile eseguire l'aggiornamento totale con i comandi: sudo apt update -y && sudo apt full-upgrade
 - se le librerie python-picamera2 non sono installate potete usare il comando: sudo apt install -y python3-picamera2
 - se le librerie per il video non sono installate potete usare il comando: sudo apt install -y ffmpeg
 - installare le librerie Python necessarie
