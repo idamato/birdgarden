@@ -218,3 +218,27 @@ fi
 printf '\n\n';
 
 
+
+CONFIGURAZIONI PER AUMENTARE LA RESILIENZA DEL FILESYSTEM 
+---------------------------------------------------------
+
+Ridurre il tempo di commit nel filesystem EXT4 configurando il file /etc/fstab, considerando che il default sono 5 secondi.
+ext4 defaults,noatime,commit=10
+
+Sempre nello stesso file è possibile configurare dei RAMfs per il logging in questo modo:
+tmpfs /tmp tmpfs defaults,noatime 0 0
+tmpfs /var/log tmpfs defaults,noatime,size=16m 0 0
+
+Per lo scarico periodico di questi dati sullo storage SD card è possibile utilizzare questo sistema: https://github.com/azlux/log2ram oppure crearne uno nuovo.
+Ad esempio sarebbe possibile che a crontab quando si esegue l'invio dei file, prima di farlo venga fatta la copia sincronizzata su disco della RAMfs
+
+Per minimizzare le scritture si può definire il filesystem di root in readonly, o con una modalità di overlay (disponibile anche nelle configurazioni Raspberry-PI).
+In conclusione, alcuni consigli generali:
+• Usare una SD card di marca conosciuta e di qualità.
+• Ridurre il numero di scritture per mezzo di commit time maggiori, usare temporary file systems ove possibile, implementare un overlay fs ove possibile.
+• Copiare i dati importanti periodicamente su uno storage in rete o cloud.
+• Implementare una policy di sostituzione delle SD cards prima che raggiungano l'end of life.
+• Usare un UPS, anche minimale.
+
+
+
