@@ -30,3 +30,139 @@ This is a brainstorming file where to put your immagination about the possible f
 
 ...possibile utilizzo anche per le radiosonde che potrebbero inviare immagini
         
+script funzionanti:
+
+ilfarodargento@birdgarden:~/birdgarden $ cat encoderMicroFAX.py
+from PIL import Image
+import numpy as np
+import wave
+import struct
+import math
+import serial
+import threading
+import queue
+import time
+
+# Parametri SSTV semplificati
+INPUT_IMAGE = "../images/Pettirosso.jpg"
+CONVERTED_IMAGE = "../images/microfax_pettirosso.jpg"
+OUTPUT_WAVE = "../images/microfax_signora.wav"
+WIDTH, HEIGHT = 64, 64
+GRAY_MIN, GRAY_MAX = 0, 255
+FREQ_MIN, FREQ_MAX = 1500, 2300
+PIXEL_DURATION = 0.05
+SYNC_FREQ = 1200
+SYNC_DURATION = 0.2
+EOL_FREQ = 300          # Frequenza speciale fine riga
+EOL_DURATION = 0.05     # Durata tono fine riga
+SAMPLE_RATE = 44100
+samples = 0
+
+# Imposta la connessione seriale
+ser_micro = serial.Serial('/dev/ttyACM0', 115200, timeout=1)
+if not ser_micro:
+    logging.info('microbit not found')
+
+def load_and_convert_image(path):
+    img = Image.open(path).convert('L')
+    img = img.resize((WIDTH, HEIGHT), Image.NEAREST)
+    img.save(CONVERTED_IMAGE)
+    return np.array(img)
+
+def gray_to_freq(gray):
+    micro_freq = FREQ_MIN + int((gray / 255) * (FREQ_MAX - FREQ_MIN))
+    global samples
+    samples += 1
+    print(samples,micro_freq)
+    ser_micro.write(str(micro_freq).encode('utf-8'))
+    time.sleep(0.1)  # breve pausa per evitare collisioni
+    return micro_freq
+
+def generate_tone(freq, duration):
+    return [math.sin(2 * math.pi * freq * i / SAMPLE_RATE) for i in range(int(SAMPLE_RATE * duration))]
+
+def save_wave(filename, data):
+    with wave.open(filename, 'w') as wav:
+        wav.setnchannels(1)
+        wav.setsampwidth(2)
+        wav.setframerate(SAMPLE_RATE)
+        for s in data:
+            val = max(-1.0, min(1.0, s))
+            wav.writeframes(struct.pack('<h', int(val * 32767)))
+
+def generate_sstv_audio(gray_array):
+    audio_data = []
+
+    for row in gray_array:
+        audio_data += generate_tone(SYNC_FREQ, SYNC_DURATION) # Sync
+        for pixel in row:
+            freq = gray_to_freq(pixel)
+            audio_data += generate_tone(freq, PIXEL_DURATION)
+        audio_data += generate_tone(EOL_FREQ, EOL_DURATION) # Fine riga
+
+    return audio_data
+
+# Processo completo
+image_path = INPUT_IMAGE
+gray_matrix = load_and_convert_image(image_path)
+audio = generate_sstv_audio(gray_matrix)
+#save_wave(OUTPUT_WAVE, audio)
+
+print("WAV Audio microFAX con tono di fine riga salvato")
+
+
+
+
+
+ilfarodargento@birdgarden:~ $ cat receiver.py
+import serial
+import time
+import numpy as np
+import wave
+import struct
+import math
+from PIL import Image
+
+# Parametri SSTV semplificati
+CONVERTED_IMAGE = "microfax_grayscale.jpg"
+OUTPUT_WAVE = "microfax_grayscale.wav"
+WIDTH, HEIGHT = 64, 64
+GRAY_MIN, GRAY_MAX = 0, 255
+FREQ_MIN, FREQ_MAX = 1500, 2300
+PIXEL_DURATION = 0.05
+SYNC_FREQ = 1200
+SYNC_DURATION = 0.2
+EOL_FREQ = 300          # Frequenza speciale fine riga
+EOL_DURATION = 0.05     # Durata tono fine riga
+SAMPLE_RATE = 44100
+count = 0
+
+ser = serial.Serial('/dev/ttyACM0', 115200)
+time.sleep(2)
+
+def freq_to_gray(freq):
+    gray = int(((freq - FREQ_MIN) / (FREQ_MAX - FREQ_MIN)) * 255)
+    return gray
+
+matrice_grigi = [[0 for x in range(64)] for y in range(64)]
+
+for y in range(64):
+    for x in range(64):
+        line = ser.read(4).decode().strip()
+        try:
+            freq = int(line)
+            gray = freq_to_gray(freq)
+            count = count + 1
+            print(count,y,x,gray)
+        except ValueError:
+            gray = 0
+        matrice_grigi[y][x] = gray
+
+# Converti la matrice in un array NumPy
+array = np.array(matrice_grigi, dtype=np.uint8)
+
+# Crea l'immagine in scala di grigi
+immagine = Image.fromarray(array, mode='L')
+
+# Salva come JPG
+immagine.save("immagine.jpg")
