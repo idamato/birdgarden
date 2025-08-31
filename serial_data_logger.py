@@ -1,3 +1,8 @@
+def on_button_pressed_a():
+    global trig0
+    trig0 = 1
+input.on_button_pressed(Button.A, on_button_pressed_a)
+
 def on_logo_pressed():
     global trig0
     serial.write_line("0,0,0,0,0")
@@ -25,7 +30,7 @@ basic.pause(2000)
 def on_forever():
     global sonar2, trig0
     sonar2 = sonar.ping(DigitalPin.P0, DigitalPin.P1, PingUnit.CENTIMETERS)
-    if sonar2 < 18:
+    if trig0 == 1 or sonar2 > 1 and sonar2 < 13:
         trig0 = 1
         basic.show_number(trig0)
         rileva()
