@@ -1,9 +1,8 @@
-/home/ilfarodargento/logs/cron.log /home/ilfarodargento/logs/serialandphoto.log {
+/var/logs/birdgarden/cron.log /var/logs/birdgarden/serialandphoto.log {
 	weekly
 	rotate 54
 	compress
 	delaycompress
 	missingok
 	notifempty
-	create 644 ilfarodargento ilfarodargento
 }

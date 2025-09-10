@@ -22,4 +22,4 @@
 # 
 # Verifica lo stato del sistema
 # m h  dom mon dow   command
-# * * * * * /home/ilfarodargento/birdgarden/check.sh
+# * * * * * birdgarden /user/local/birdgarden/scripts/check.sh

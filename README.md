@@ -3,6 +3,10 @@
 
 # Birdgarden 2.0
 
+>[!CAUTION]
+> E' un fork fatto male ... e testato peggio .... da non usare 
+
+
 Progetto realizzato a cura dei soci di il faro d'argento APS [www.webradiofaro.it](www.webradiofaro.it)
 
 Il progetto Birdgarden 2.0 mira alla realizzazione di una casetta/nido o mangiatoia per gli uccellini, monitorata attraverso una camera ed un microfono nascosti che metterà a disposizione su internet i dati rilevati, l’audio e le foto scattate nei momenti in cui viene occupata.
@@ -48,20 +52,48 @@ Quindi occorre scaricare ed installare Raspberry Pi OS sulla scheda SSD utilizza
 Eseguire le operazioni seguenti:
 
 - eseguire il login con username e password impostati (l'importante è che la home directory si chiami /home/ilfarodargento)
-- eseguire l’aggiornamento di Linux con i comandi:
-- sudo apt update -y && sudo apt upgrade -y (occorre rispondere con Y confermando l'attività - questo task può durare anche 30 minuti). Nota bene che se è stata rilasciata una nuova versione di Raspbian OS è possibile eseguire l'aggiornamento totale con i comandi: sudo apt update -y && sudo apt full-upgrade
-- se le librerie python-picamera2 non sono installate potete usare il comando: sudo apt install -y python3-picamera2
-- se le librerie per il video non sono installate potete usare il comando: sudo apt install -y ffmpeg
-- installare le librerie Python necessarie
-- la maggior parte delle librerie python3 sono installate, occorre ancora il comando seguente per la libreria seriale: sudo apt install python3-serial
-- scaricare il software dal repository GITHUB
-- sudo apt install git
-- git clone https://github.com/idamato/birdgarden/
-- modificare i permessi ai file scaricati con chmod a+x birdgarden/\*.sh birdgarden/\*.py birdgarden/photo.service
+- eseguire l’aggiornamento di RPI Os con i comandi:
+
+```bash
+$ sudo -s 
+$ export DEBIAN_FRONTEND=noninteractive
+$ apt update -y \
+  && apt upgrade -y \
+  && apt full-upgrade -y
+```
+> [!NOTE] 
+> Questo task può durare anche 30 minuti
+
+Terminato l'operazione è consigliato effettuare il riavvio
+
+Procedere all'installazione delle dipendenze
+
+~~~bash
+$ sudo apt update && \
+  sudo apt install -y python3-picamera2\
+                      ffmpeg \
+                      git \
+                      python3-serial \
+~~~
+
+Terminata l'installazione effettuare il clone di questo repository all'interno della RPi
+
+~~~bash
+$ git clone https://github.com/idamato/birdgarden/
+~~~
+
+e procedere all'installazione
+
+~~~
+$ cd birdgarden
+$ sudo bash install_rpi.sh
+~~~
+
+
 - modificare username e password e identificativo TAG con la CPUID nel file wordpress_playground.py secondo le indicazioni ricevute al momento dell'adesione al progetto. (Viene creato un account all'interno del portale Birdgarden 2.0 con le credenziali per la pubblicazione delle foto/video dal dispositivo)
 - creare il link simbolico al file photo.service di avvio del servizio al boot:
   sudo cp /home/ilfarodargento/birdgarden/photo.service /lib/systemd/system/photo.service ;
-  sudo systemctl enable photo.service ; 
+  sudo systemctl enable photo.service ;
   sudo systemctl start photo.service (comando per l'avvio manuale) ;
   sudo journalctl --unit=photo.service (per verificare il log delle esecuzioni precedenti)
 - configurare il comando a tempo (crontab -e) aggiungendo in fondo la seguente riga:
@@ -79,3 +111,27 @@ In particolare deve essere creato un utente/ruolo specifico associato al disposi
 Oltre all'utente deve essere anche creata una chiave applicativa legata all'applicazione Birdgarden e con essa si avranno le credenziali da inserire nello scirpt Python per l'invio dati.
 
 -
+
+
+# Testing 
+
+>[!WARNING]
+Work in progress
+
+Per RPi  ARMv7
+```bash
+podman run -it  --volume $PWD:/src --platform=linux/arm/7 dtcooper/raspberrypi-os:bookworm
+```
+
+Per RPi ARM64
+
+```bash
+podman run -it  --volume $PWD:/src --platform=linux/arm64 dtcooper/raspberrypi-os:bookworm
+```
+
+e poi 
+
+~~~bash
+# cd /src
+# bash install_rpi.sh
+~~~

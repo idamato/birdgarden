@@ -10,7 +10,7 @@ This is a brainstorming file where to put your immagination about the possible f
 3) Solar panel integration
 
 4) Is it worth to have the Micro:bit out of this project, or there could be some hidden benefits?
-    a) How do you think about having Micro:bit as an optional device? Wireless connected via serial-bluethoot to the Raspberry, only to issue command to this one? 
+    a) How do you think about having Micro:bit as an optional device? Wireless connected via serial-bluethoot to the Raspberry, only to issue command to this one?
     b) Is it worth to use PIR sensor instead of the SONAR one, and connect it directly to the Raspberry?
 
 5) Are terminal based (text) images possible to inject as AI training? ASCII Art convertion could help reduce the complexity of the AI model and calculations?
@@ -31,7 +31,7 @@ This is a brainstorming file where to put your immagination about the possible f
 ...possibile utilizzo anche per le radiosonde che potrebbero inviare immagini
         
 script funzionanti:
-
+~~~
 ilfarodargento@birdgarden:~/birdgarden $ cat encoderMicroFAX.py
 from PIL import Image
 import numpy as np
