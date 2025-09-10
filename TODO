@@ -219,7 +219,7 @@ printf '\n\n';
 
 
 
-CONFIGURAZIONI PER AUMENTARE LA RESILIENZA DEL FILESYSTEM 
+CONFIGURAZIONI PER AUMENTARE LA RESILIENZA DEL FILESYSTEM
 ---------------------------------------------------------
 
 Ridurre il tempo di commit nel filesystem EXT4 configurando il file /etc/fstab, considerando che il default sono 5 secondi.
