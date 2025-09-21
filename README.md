@@ -1,6 +1,6 @@
-# birdgarden
-Birdgarden 2.0
-Progetto realizzato a cura dei soci di il faro d'argento APS (www.webradiofaro.it)
+# Birdgarden 2.0
+
+Progetto realizzato a cura dei soci di [**il faro d'argento APS**](www.webradiofaro.it)
  
 Il progetto Birdgarden 2.0 mira alla realizzazione di una casetta/nido o mangiatoia per gli uccellini, monitorata attraverso una camera ed un microfono nascosti che metterà a disposizione su internet i dati rilevati, l’audio e le foto scattate nei momenti in cui viene occupata. 
 
