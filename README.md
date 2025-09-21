@@ -4,23 +4,25 @@
 Progetto realizzato a cura dei soci di [**il faro d'argento APS**](www.webradiofaro.it)
 Il progetto Birdgarden 2.0 mira alla realizzazione di una casetta/nido o mangiatoia per gli uccellini, monitorata attraverso una fotocamera ed un microfono nascosti che metterà a disposizione su internet i dati rilevati, l’audio e le foto scattate nei momenti in cui viene occupata. 
 
-## Installazione del sistema Raspberry OS
+## Installazione del sistema Raspian OS
 Per l'inizializzazione del dispositivo al primo utilizzo sono necessarie alcune attività per le quali è necessario collegare al dispositivo un monitor o TV tramite il cavo HDMI ed una tastiera+mouse tramite il cavo USB aggiuntivo. In alternativa è possibile configurare il sistema raspberry attraverso una connessione seriale, per mezzo di un cavo del tipo USB-to-SERIAL con chip PL2303, facendo attenzione al fatto che sia utilizzabile con la tensione dei 3V dei GPIO del Raspberry, come visualizzato di seguito.
 
 ![USB-to-serial](https://github.com/idamato/birdgarden/blob/main/RPI-USB-to-Serial_7.avif).
 
 Per il collegamento attraverso la porta seriale è necessario abilitarne l'accesso nel file config.txt inserendo la seguente riga: `enable_uart=1`
-Nelle versioni più recenti del sistema Raspian OS non esiste un utente preconfigurato con cui eseguire il login tuttavia tramie il software Raspberry Pi Imager è possibile definire le principali configurazioni prima ancora del primo avvio, cosa che in questo progetto abbiamo fatto per voi. Per i sistemi Linux Debian è sufficiente digitare il comando: sudo apt install rpi-imager, mentre per Windows si può scaricare l'installer direttamente dal sito raspberrypi.com
-Per il collegamento via seriale abbiamo utilizzato il comando: tio /dev/ttyUSB0, dopo aver verificato che il device ttyUSB0 fosse correttamente associato al cavo USB-to-serial inserito, per mezzo del comando: sudo dmesg, che fornisce le seguenti informazioni:
 
+Nelle versioni più recenti del sistema Raspian OS non esiste un utente preconfigurato con cui eseguire il login tuttavia tramie il software [Raspberry Pi Imager](https://www.raspberrypi.com/software/) è possibile definire le principali configurazioni prima ancora del primo avvio, cosa che in questo progetto abbiamo fatto per voi. Per i sistemi Linux della famiglia Debian è sufficiente digitare il comando: `sudo apt install rpi-imager`, mentre per chi utilizza Windows può scaricare l'installer per Windows direttamente dal sito.
+
+Per il collegamento via seriale abbiamo utilizzato il comando: `tio /dev/ttyUSB0`, dopo aver verificato che il device ttyUSB0 fosse correttamente associato al cavo USB-to-serial inserito, per mezzo del comando: `sudo dmesg`, che fornisce ad esempio, le seguenti informazioni:
+```
 [ 7849.113480] usb 1-2: new full-speed USB device number 13 using xhci_hcd
 [ 7849.240467] usb 1-2: New USB device found, idVendor=067b, idProduct=2303, bcdDevice= 4.00
 [ 7849.240514] usb 1-2: New USB device strings: Mfr=1, Product=2, SerialNumber=0
 [ 7849.240537] usb 1-2: Product: USB-Serial Controller
 [ 7849.240555] usb 1-2: Manufacturer: Prolific Technology Inc.
 [ 7849.245418] pl2303 1-2:1.0: pl2303 converter detected
-[ 7849.248483] usb 1-2: pl2303 converter now attached to ttyUSB0
-
+[ 7849.248483] usb 1-2: pl2303 converter now attached to **ttyUSB0**
+```
 Quindi occorre scaricare ed installare Raspberry Pi OS sulla scheda SSD utilizzando il software Raspberry Pi Imager, completando la configurazione iniziale dell’utente e del wi-fi. Inserire successivamente la scheda SSD nel Raspberry Pi Zero 2W, collegarvi una tastiera e maouse tramite il cavetto USB, il monitor con adattatore mini HDMI (in alternativa si utilizzi la connessione seriale) ed il camera module con il cavo apposito. Tenete a mente che durante il primo avvio il sistema opera delle configurazioni automatiche ed esegue anche un riavvio automatico, quindi impiega necessariamente più tempo a partire rispetto ad una normale procedura di avvio, come potranno essere quelle successive. Se tutto è andato a buon fine avrete a video il desktop del sistema Raspian OS (derivato da Linux Debian) e potrete aprire una finestra terminale per proseguire con le attività di configurazione descritte nel seguito.
 
 Eseguire le operazioni seguenti:
