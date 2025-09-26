@@ -17,17 +17,27 @@ This is a brainstorming file where to put your immagination about the possible f
 
 6) Ham radio SSTV mode as a new option for sending images
     a) There is a Python module which enable image transformation into wav files
-       The generated audio can be sent as a modulated FM signal over the antenna using PiFM 
-       git clone https://github.com/dnet/pySSTV
-       cd pySSTV ; python3 ./setup.y build ; sudo python3 ./setup.py install
-       cd <where images are> ; python3 -m pysstv --mode MartinM2 --resize image.png output.wav 
-       a file of 35Kb result in an audio wav file of about 5.5 Mb.
-    b) Raspberry pi is able to send FM mofulation as RF via a small antenna connected to the GPIO4
+       Some instruction require installation of specific libraries, check inside GitHub repository of every library or software.
+       The following may be needed: sudo apt install libgd-dev libmagic-dev
+       a.1)
+           The generated audio can be sent as a modulated FM signal over the antenna using PiFM 
+           git clone https://github.com/dnet/pySSTV
+           cd pySSTV ; python3 ./setup.y build ; sudo python3 ./setup.py install
+           cd <where images are> ; python3 -m pysstv --mode MartinM2 --resize image.png output.wav 
+           an image file of 35Kb result in an audio wav file of about 5.5 Mb.
+       a.2) Raspberry pi is able to send FM mofulation as RF via a small antenna connected to the GPIO4
        git clone https://github.com/F5OEO/rpitx
        cd rpitx ; ./install.sh (the compile process somehow fail to compile some programs but we need the pifmrds which is orrectly available)
        reboot
        sudo ./pifmrds -freq 76 -audio /home/ilfarodargento/sent/pettirosso-inverno.wav
-
+    b) per trasmettere a frequenze differenti dalla FM commerciale, come ad esempio a 433 Mhz la procedura è differente:
+       si usa imagemagik per trasformare l'immagine in un formato adatto con il comando seguente
+       convert <input> -resize '320x256^' -gravity center -extent 320x256 -depth 8 <output>.rgb
+       poi si converte il file .rgb in formato .ft con il comando seguente
+       pisstv <input>.rgb <output>.ft
+       ed infine si avvia la trasmissione alla frequenza desiderata, il range è da pochi kHz fino a 700 Mhz, con il comandi seguente
+       sudo rpitx -m RF -i <input>.ft -f <frequency in KHz>
+       
 ...possibile utilizzo anche per le radiosonde che potrebbero inviare immagini
         
 script funzionanti:
