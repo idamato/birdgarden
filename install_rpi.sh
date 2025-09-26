@@ -11,7 +11,7 @@ useradd  -u 192 -g 192 -s /usr/sbin/nologin -G dialout -d /usr/local/birdgarden/
 # Creazione /usr/local/birdgarden/
 
 mkdir -p /usr/local/birdgarden/
-mkdir -p /var/logs/birdgarden/logs
+mkdir -p /var/logs/birdgarden/logs/
 mkdir -p /usr/local/birdgarden/departures/
 mkdir -p /usr/local/birdgarden/sent/
 chmod 755 -R /usr/local/birdgarden/
@@ -46,3 +46,5 @@ sudo apt update && \
                       ffmpeg \
                       git \
                       python3-serial
+
+echo 'tmpfs   /tmp/ramdisk    tmpfs  rw,size=30M,nr_inodes=5k,noexec,nodev,nosuid,uid=ubuntu,gid=ubuntu,mode=1700 0 0' >> /etc/fstab

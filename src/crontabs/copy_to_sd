@@ -21,4 +21,5 @@
 # For more information see the manual pages of crontab(5) and cron(8)
 # 
 # m h  dom mon dow   command
-0,10,20,30,40,50 * * * * birdgarden /usr/local/birdgarden/scripts/sendphoto.sh >> /tmp/ramdisk/logs/cron.log 2>&1
+5,15,25,35,45,55 * * * * birdgarden rsync -axv /tmp/ramdisk/logs/ /usr/local/birdgarden/logs/
+5,15,25,35,45,55 * * * * birdgarden rsync -axv /tmp/ramdisk/departures/ /usr/local/birdgarden/departures/
