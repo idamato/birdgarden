@@ -23,7 +23,7 @@ def leggi_dati_seriale(porta, baudrate):
                     dati = ser.readline().decode('utf-8').rstrip()
                     if dati:
                         return dati
-        
+
         except serial.SerialException as e:
             # Gestione errore di connessione
             print(f"Errore di connessione: {e}")

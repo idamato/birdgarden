@@ -1,0 +1,8 @@
+/var/logs/birdgarden/cron.log /var/logs/birdgarden/serialandphoto.log {
+	weekly
+	rotate 54
+	compress
+	delaycompress
+	missingok
+	notifempty
+}
