@@ -1,9 +1,0 @@
-/home/ilfarodargento/logs/cron.log /home/ilfarodargento/logs/serialandphoto.log {
-	weekly
-	rotate 54
-	compress
-	delaycompress
-	missingok
-	notifempty
-	create 644 ilfarodargento ilfarodargento
-}

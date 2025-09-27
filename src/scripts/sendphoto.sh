@@ -23,7 +23,7 @@ fi
 # Crea un file di lock con il PID corrente
 echo $$ > "$LOCKFILE"
 
-WORKDIR=/home/ilfarodargento
+WORKDIR=/usr/local/birdgarden
 CPUID=$(cat /proc/cpuinfo | grep Serial | cut -f2 -d":"|awk '{$1=$1};1')
 #DATA=$(date +"%Y/%m/%d-%H:%M:%S")
 DATA=$(date +"%Y%m%d-%H%M%S")

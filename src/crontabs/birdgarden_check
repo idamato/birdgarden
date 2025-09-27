@@ -20,5 +20,6 @@
 # 
 # For more information see the manual pages of crontab(5) and cron(8)
 # 
+# Verifica lo stato del sistema
 # m h  dom mon dow   command
-0,10,20,30,40,50 * * * * /home/ilfarodargento/birdgarden/sendphoto.sh >> /home/ilfarodargento/logs/cron.log 2>&1
+# * * * * * birdgarden /user/local/birdgarden/scripts/check.sh
