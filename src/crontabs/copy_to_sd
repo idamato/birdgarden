@@ -22,4 +22,4 @@
 # 
 # m h  dom mon dow   command
 5,15,25,35,45,55 * * * * birdgarden rsync -axv /tmp/ramdisk/logs/ /usr/local/birdgarden/logs/
-5,15,25,35,45,55 * * * * birdgarden rsync -axv /tmp/ramdisk/departures/ /usr/local/birdgarden/departures/
+5,15,25,35,45,55 * * * * birdgarden rsync -axv /tmp/ramdisk/departures/ /usr/local/birdgarden/departures/ && rm -rf /tmp/ramdisk/departures/*
