@@ -11,14 +11,14 @@ useradd  -u 192 -g 192 -s /usr/sbin/nologin -G dialout -d /usr/local/birdgarden/
 # Creazione /usr/local/birdgarden/
 
 mkdir -p /usr/local/birdgarden/
-mkdir -p /var/logs/birdgarden/logs/
+mkdir -p /var/log/birdgarden/
 mkdir -p /usr/local/birdgarden/departures/
 mkdir -p /usr/local/birdgarden/sent/
 chmod 755 -R /usr/local/birdgarden/
 
 
 # Dirty Hack ... we need the birdgarden user
-chmod 777 /var/logs/birdgarden/
+chmod 777 /var/log/birdgarden/
 # copia binari
 
 cp src/*.py /usr/local/birdgarden/
