@@ -6,7 +6,7 @@
 # Creazione utente
 
 groupadd -g 192 birdgarden
-useradd  -u 192 -g 192 -s /usr/sbin/nologin -G dialout -d /usr/local/birdgarden/ birdgarden
+useradd  -u 192 -g 192 -s /usr/sbin/nologin -G dialout,video -d /usr/local/birdgarden/ birdgarden
 
 # Creazione /usr/local/birdgarden/
 
@@ -34,8 +34,8 @@ cp src/systemd/photo.service /etc/systemd/system
 chown birdgarden:birdgarden /usr/local/birdgarden/ -R
 
 systemctl daemon-reload
+systemctl enable photo.service
 systemctl start photo.service
-
 
 apt update -y \
   && apt upgrade -y \
@@ -46,5 +46,3 @@ sudo apt update && \
                       ffmpeg \
                       git \
                       python3-serial
-
-echo 'tmpfs   /tmp/ramdisk    tmpfs  rw,size=30M,nr_inodes=5k,noexec,nodev,nosuid,uid=ubuntu,gid=ubuntu,mode=1700 0 0' >> /etc/fstab
