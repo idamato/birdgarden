@@ -16,6 +16,7 @@ mkdir -p /usr/local/birdgarden/departures/
 mkdir -p /usr/local/birdgarden/sent/
 chmod 755 -R /usr/local/birdgarden/
 
+crontab -u birdgarden src/crontabs/sendphoto
 
 # Dirty Hack ... we need the birdgarden user
 chmod 777 /var/log/birdgarden/
