@@ -51,7 +51,7 @@ def create_wordpress_post(url, title, body,image_id, categories, tags, wordpress
 "featured_media": image_id,
 "status": "pending",
 "categories": categories,
-"tags": tags
+"tags": tags,
 "meta": {
             "uuid": uuid
         }
