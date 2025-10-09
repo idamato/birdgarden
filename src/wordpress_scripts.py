@@ -53,7 +53,7 @@ def create_wordpress_post(url, title, body,image_id, categories, tags, wordpress
 "categories": categories,
 "tags": tags,
 "meta": {
-            "uuid": uuid
+            "uuid_bg": uuid
         }
  }
  response = requests.post(api_url, headers=wordpress_header_post, json=data)
