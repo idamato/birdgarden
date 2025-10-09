@@ -1,5 +1,6 @@
 import requests
 import base64
+import uuid as uuid_lib
 
 #token creation function, for authentication purposes
 def wordpress_header (wp_user, wp_pw):
@@ -38,7 +39,10 @@ def postmedia4video (url, media, filename,wordpress_auth_media):
     return results["id"]
 
 #post creation function 
-def create_wordpress_post(url, title, body,image_id, categories, tags, wordpress_header_post):
+def create_wordpress_post(url, title, body,image_id, categories, tags, wordpress_header_post, uuid=None):
+ # Genera un UUID se non è stato fornito
+ if uuid is None:
+    uuid = str(uuid_lib.uuid4())
  api_url = f'https://{url}/wp-json/wp/v2/posts'
 #data structure of the post, in JSON
  data = {
@@ -48,10 +52,17 @@ def create_wordpress_post(url, title, body,image_id, categories, tags, wordpress
 "status": "pending",
 "categories": categories,
 "tags": tags
+"meta": {
+            "uuid": uuid
+        }
  }
  response = requests.post(api_url, headers=wordpress_header_post, json=data)
  result = response.json()
-
+ if response.status_code == 201:
+        print(f"Post creato con UUID: {uuid}")
+    else:
+        print(f"Errore nella creazione del post: {response.status_code} - {response.text}")
+    return response
 # You can uncomment this line if you want to print a confirmation of each post creation in the console
  print(result) 
  return result
