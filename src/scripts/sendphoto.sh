@@ -31,11 +31,13 @@ DISK=$(df -h -l --output=size,used / | tail -1)
 UPTIME=$(uptime)
 SENT=$(ls -1 $WORKDIR/sent | wc -l)
 DEPARTURES=$(ls -1 $WORKDIR/departures | wc -l)
+BODY='{"data":"'"$DATA"'","cpuid":"'"$CPUID"'","uptime":"'"$UPTIME"'","disk":"'"$DISK"'","sent":"'"$SENT"'","departures":"'"$DEPARTURES"'"}'
 
 cd $WORKDIR/departures
 ping -c 3 www.webradiofaro.it
 PINGSTATUS=$?
-
+echo "------------------------------------------------------------------------------"
+echo $BODY
 for item in $(ls -1); do
   echo "ls -l $item"
   # esegue un ping per la verifica della linea internet
@@ -45,6 +47,7 @@ for item in $(ls -1); do
   else
     # linea internet assente o non funzionante
     echo "Ho $DEPARTURES file da spedire ma non trovo connessione con internet"
+    echo "------------------------------------------------------------------------------"
     # Rimuoviamo il file di lock alla fine dello script
     trap cleanup EXIT
     exit 1
@@ -56,5 +59,6 @@ if [ $PINGSTATUS -eq 0 ]; then
   -H "Content-Type: application/json" \
   -d '{"data":"'"$DATA"'","cpuid":"'"$CPUID"'","uptime":"'"$UPTIME"'","disk":"'"$DISK"'","sent":"'"$SENT"'","departures":"'"$DEPARTURES"'"}'
 fi
+echo "------------------------------------------------------------------------------"
 # Rimuoviamo il file di lock alla fine dello script
 trap cleanup EXIT
