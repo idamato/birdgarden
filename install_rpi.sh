@@ -14,6 +14,8 @@ mkdir -p /usr/local/birdgarden/
 mkdir -p /var/log/birdgarden/
 mkdir -p /usr/local/birdgarden/departures/
 mkdir -p /usr/local/birdgarden/sent/
+mkdir -p /usr/local/birdgarden/sentviaradio/
+
 chmod 755 -R /usr/local/birdgarden/
 
 crontab -u birdgarden src/crontabs/sendphoto
