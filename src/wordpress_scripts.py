@@ -59,10 +59,10 @@ def create_wordpress_post(url, title, body,image_id, categories, tags, wordpress
  response = requests.post(api_url, headers=wordpress_header_post, json=data)
  result = response.json()
  if response.status_code == 201:
-        print(f"Post creato con UUID: {uuid}")
-    else:
-        print(f"Errore nella creazione del post: {response.status_code} - {response.text}")
-    return response
+    print(f"Post creato con UUID: {uuid}")
+ else:
+    print(f"Errore nella creazione del post: {response.status_code} - {response.text}")
+ return response
 # You can uncomment this line if you want to print a confirmation of each post creation in the console
  print(result) 
  return result
