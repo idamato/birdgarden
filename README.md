@@ -17,7 +17,7 @@ Per l'inizializzazione del dispositivo al primo utilizzo sono necessarie alcune 
 
  ![RPI-Serial](./images/RPI-USB-to-Serial_7.png)
 
-Per il collegamento attraverso la porta seriale è necessario abilitarne l'accesso nel file config.txt inserendo la seguente riga: enable_uart=1
+Per il collegamento attraverso la porta seriale è necessario abilitarne l'accesso nel file /boot/firmware/config.txt inserendo la seguente riga: enable_uart=1
 
 Nelle versioni più recenti del sistema Raspian OS non esiste un utente preconfigurato con cui eseguire il login tuttavia tramie il software Raspberry Pi Imager è possibile definire le principali configurazioni prima ancora del primo avvio, cosa che in questo progetto abbiamo fatto per voi.
 
@@ -62,6 +62,14 @@ $ apt update -y \
 ```
 > [!NOTE] 
 > Questo task può durare anche 30 minuti
+
+Occorre fornire al sistema un nuovo dispositivo audio differente da quello dell'uscita HDMI. l'indicazione che vogliamo un ulteriore dispositivo di uscita per l'audio e che quindi debba essere redirezionato sui pin GPIO 18 e 13 in modalità PWM
+
+~~~bash
+gpio=18,13,a5
+audio_pwm_mode=2
+dtoverlay=audremap,pins_18_13
+~~~
 
 Terminato l'operazione è consigliato effettuare il riavvio
 
