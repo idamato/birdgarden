@@ -24,7 +24,7 @@ fi
 echo $$ > "$LOCKFILE"
 LOCKPID=$(cat "$LOCKFILE")
 
-WORKDIR=/home/ilfarodargento
+WORKDIR=/usr/local/birdgarden
 DATA=$(date -u +"%d/%m/%Y-%H:%M:%S")
 
 cd $WORKDIR/sent
