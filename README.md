@@ -98,16 +98,7 @@ $ sudo bash install_rpi.sh
 
 
 - modificare username e password e identificativo TAG con la CPUID nel file wordpress_playground.py secondo le indicazioni ricevute al momento dell'adesione al progetto. (Viene creato un account all'interno del portale Birdgarden 2.0 con le credenziali per la pubblicazione delle foto/video dal dispositivo)
-- creare il link simbolico al file photo.service di avvio del servizio al boot:
-  sudo cp /home/ilfarodargento/birdgarden/photo.service /lib/systemd/system/photo.service ;
-  sudo systemctl enable photo.service ;
-  sudo systemctl start photo.service (comando per l'avvio manuale) ;
-  sudo journalctl --unit=photo.service (per verificare il log delle esecuzioni precedenti)
-- configurare il comando a tempo (crontab -e) aggiungendo in fondo la seguente riga:
-  - `30 * * * * /home/ilfarodargento/birdgarden/sendphoto.sh >> /home/ilfarodargento/logs/cron.log 2>&1`
-- dalla /home/ilfarodargento creare le directory per i log e per le foto da spedire e spedite con: `mkdir logs departures sent`
-- per la rotazione dei log installiamo il file di configurazione: `sudo cp birdgarden/birdgarden /etc/logrotate.d/`
-- esegure il test del focus della fotocamera sulla vostra installazione eseguendo il comando: `python3 test-camera-focus.py`; tenete presente che se state utilizzando il terminale senza grafica dovrete prima modificare lo script impostando la preview a False.
+- eseguire il test del focus della fotocamera sulla vostra installazione. Dovete prima disattivare il servizio con il comando: `sudo systemctl stop photo.service` (potrete poi riavviarlo con il comando di start) e di seguito date il comando: `python3 test-camera-focus.py`; tenete presente che se state utilizzando il terminale senza grafica dovrete prima modificare lo script impostando la preview a False. Tenete a mente che ogni modello di camera ha le sue caratteristiche.
 - collegare anche il dispositivo micro:bit caricandovi il codice `serial_data_logger.py` tramite il sito [Makecode](makecode.microbit.org).
 - Se si desidera modificare la configurazione del WiFi si può procedere nel modo seguente: eseguire il comando: `sudo nmtui`, ed abilitare la rete wifi di interesse.
 
