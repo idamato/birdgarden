@@ -43,7 +43,7 @@ for item in $(ls -1); do
   # esegue un ping per la verifica della linea internet
   if [ $PINGSTATUS -eq 0 ]; then
     # esegue la pubblicazione dell'articolo in wordpress poiché c'è connessione internet
-    /usr/bin/python ../birdgarden/wordpress_playground.py $CPUID $DATA $item && mv $item ../sent/
+    /usr/bin/python ../wordpress_playground.py $CPUID $DATA $item && mv $item ../sent/
   else
     # linea internet assente o non funzionante
     echo "Ho $DEPARTURES file da spedire ma non trovo connessione con internet"
