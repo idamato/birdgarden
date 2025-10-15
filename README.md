@@ -81,6 +81,19 @@ $ sudo apt update && \
                       ffmpeg \
                       git \
                       python3-serial \
+                      python3-setuptools \
+                      imagemagick
+~~~
+
+Occorre installare anche il modulo Python se si vuole utilizzare la trasmissione in SSTV, seguire i passaggi elencati nel seguito
+
+~~~bash
+$ git clone https://github.com/dnet/pySSTV
+...
+$ cd pySSTV
+$ python setup.py build
+$ sudo python setup.py install
+$ 
 ~~~
 
 Terminata l'installazione effettuare il clone di questo repository all'interno della RPi
