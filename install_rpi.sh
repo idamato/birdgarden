@@ -26,7 +26,7 @@ chmod 777 /var/log/birdgarden/
 
 cp src/*.py /usr/local/birdgarden/
 cp -a  src/scripts/ /usr/local/birdgarden/
-chmod +x /usr/local/birdgarden/*.py
+chmod +x /usr/local/birdgarden/*.py /usr/local/birdgarden/scripts/*.sh
 
 cp src/logrotate/* /etc/logrotate.d
 
