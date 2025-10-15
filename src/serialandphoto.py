@@ -92,7 +92,7 @@ while True:
         camera.start()
         # capture_config = camera.create_still_configuration(main={"size":(1920, 1080)}, lores={"size":(640,480)})
         capture_config = camera.create_still_configuration()
-        filename = "/home/ilfarodargento/departures/" + str(id) + "_" + str(luce) + "_" + str(temperatura) + "_" + str(audio) + "_" + str(sonar)
+        filename = "/usr/local/birdgarden/departures/" + str(id) + "_" + str(luce) + "_" + str(temperatura) + "_" + str(audio) + "_" + str(sonar)
         # flash_led.on()
         camera.set_controls({"AfMode": controls.AfModeEnum.Continuous, "AfSpeed": controls.AfSpeedEnum.Fast})
         # attendo un secondo per la messa a fuoco
