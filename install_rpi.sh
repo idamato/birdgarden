@@ -43,9 +43,3 @@ systemctl start photo.service
 apt update -y \
   && apt upgrade -y \
   && apt full-upgrade -y
-
-sudo apt update && \
-  sudo apt install -y python3-picamera2\
-                      ffmpeg \
-                      git \
-                      python3-serial
