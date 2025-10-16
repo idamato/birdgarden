@@ -6,7 +6,7 @@
 # Creazione utente
 
 groupadd -g 192 birdgarden
-useradd  -u 192 -g 192 -s /usr/sbin/nologin -G dialout,video -d /usr/local/birdgarden/ birdgarden
+useradd  -u 192 -g 192 -s /usr/sbin/nologin -G dialout,video,audio -d /usr/local/birdgarden/ birdgarden
 
 # Creazione /usr/local/birdgarden/
 
