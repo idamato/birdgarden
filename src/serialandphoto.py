@@ -100,7 +100,7 @@ while True:
         # esegue la foto
         camera.switch_mode_and_capture_file(capture_config, filename + ".jpg")
         # in caso di video
-        camera.start_and_record_video(filename + ".mp4", duration=15)
+        camera.start_and_record_video(filename + ".mp4", duration=30)
         # flash_led.off()
         camera.stop()
         print('missione compiuta: ', filename)
