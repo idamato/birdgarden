@@ -1,1 +1,37 @@
+The maximum resolution of the sensor is 4608×2592 pixels, therefore note that it has a 16:9 rather than a 4:3 aspect ratio. Because of the special nature of this
+sensor, the HDR feature is not available at the maximum resolution, but only at a resolution of 2304×1296 pixels.
+
+--------- example ----------
+from datetime import datetime
+from picamera2 import Picamera2
+from gpiozero import LED
+import time
+
+# If a LED light is used as flash during night photos/videos
+flash_led = LED(17)
+cam = Picamera2()
+config = cam.create_still_configuration(...parameters...)
+cam.configure(config)
+cam.start()
+flash_led.on()
+# Let the light sensor adapt to the LED for 1 sec.
+time.sleep(1)
+cam.capture_file('filename.jpg')
+flash_led.off()
+cam.stop()
+----------------------------
+
+To show exposition information put those lines after the sleep 1 sec.
+md = cam.capture_metadata()
+print(f"Analogue Gain: {md['AnalogueGain']}",
+f"ExposureTime: {md['ExposureTime']}",
+f"ColourGains: {md['ColourGains']}")
+
+t='{:%Y%m%d-%H%M%S}'.format(datetime.now())
+filename = 'snap'+t+'.jpg'
+
+cam.start_and_capture_file(f"static/{filename}",
+show_preview=False)
+# Copy it to the latest.jpg file
+shutil.copyfile(f"static/{filename}", 'static/latest.jpg')
 
