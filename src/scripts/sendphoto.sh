@@ -42,8 +42,11 @@ for item in $(ls -1); do
   echo "ls -l $item"
   # esegue un ping per la verifica della linea internet
   if [ $PINGSTATUS -eq 0 ]; then
+    # estrapolo la data del file
+    DATAFOTO=$(echo $item | cut -f 1 -d "_")
+    NOMEFILE=$(echo $item | cut -f 2- -d "_")
     # esegue la pubblicazione dell'articolo in wordpress poiché c'è connessione internet
-    /usr/bin/python ../wordpress_playground.py $CPUID $DATA $item && mv $item ../sent/
+    /usr/bin/python ../wordpress_playground.py $CPUID $DATAFOTO $NOMEFILE && mv $item ../sent/
   else
     # linea internet assente o non funzionante
     echo "Ho $DEPARTURES file da spedire ma non trovo connessione con internet"

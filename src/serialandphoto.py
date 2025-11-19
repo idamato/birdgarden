@@ -5,6 +5,7 @@ from picamera2 import Picamera2
 from libcamera import controls
 import serial
 import os
+from datetime import datetime
 # from gpiozero import LED
 # from gpiozero import MotionSensor
 
@@ -92,7 +93,9 @@ while True:
         camera.start()
         # capture_config = camera.create_still_configuration(main={"size":(1920, 1080)}, lores={"size":(640,480)})
         capture_config = camera.create_still_configuration()
-        filename = "/usr/local/birdgarden/departures/" + str(id) + "_" + str(luce) + "_" + str(temperatura) + "_" + str(audio) + "_" + str(sonar)
+        # salva data/ora corrente in formato %Y%m%d-%H%M%S nella variabile
+        valdata = datetime.now().strftime("%Y%m%d-%H%M%S")
+        filename = "/usr/local/birdgarden/departures/" + str(valdata) "_" + str(id) + "_" + str(luce) + "_" + str(temperatura) + "_" + str(audio) + "_" + str(sonar)
         # flash_led.on()
         camera.set_controls({"AfMode": controls.AfModeEnum.Continuous, "AfSpeed": controls.AfSpeedEnum.Fast})
         # attendo un secondo per la messa a fuoco

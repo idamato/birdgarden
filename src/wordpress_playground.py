@@ -18,7 +18,8 @@ wp_pw = "INSERT-WORDPRESS-APPLICATION-PASSWORD"
 
 # Esempio da adeguare al contesto
 url = "www.webradiofaro.it/birdgarden" #you set the root domain of your WordPress site
-filename = seriale + "." + datafile + media #you set the name of your image
+# costruisco il nome del file con i separatori
+filename = seriale + "." + datafile + "_" + media 
 categories = [2] # birdgarden
 tags = [3] #identificare il tag con la CPUID (seriale) del Raspberry mittente, creato al momento dell'iscrizione
 
@@ -38,14 +39,14 @@ wordpress_auth_media = wordpress_header(wp_user, wp_pw)[1]
 ext = os.path.splitext(media)[-1].lower()
 if ext == ".jpg":
      title = "Foto dal Birdgarden " + wp_user + " del " + datafile
-     body = "<a href=\"https://www.webradiofaro.it/birdgarden/wp-content/uploads/" + filename + "\">Immagine originale</a><p>Temperatura: " + temperatura + "<br>Luce: " + luce + "<br>Rumore: " + audio + "<br>Distanza: " + sonar + "</p>" 
+     body = "<a href=\"https://www.webradiofaro.it/birdgarden/wp-content/uploads/" + filename + "\">Immagine originale</a><p>ID: " + ts + "<br>Temperatura: " + temperatura + "<br>Luce: " + luce + "<br>Rumore: " + audio + "<br>Distanza: " + sonar + "</p>" 
      #image upload
      media_id = postmedia(url, media, filename, wordpress_auth_media)
      #post creation
      create_wordpress_post(url, title, body, media_id, categories, tags, wordpress_head_post)
 elif ext == ".mp4":
      title = "Video dal Birdgarden " + wp_user + " del " + datafile
-     body = "<figure class=\"wp-block-video\"><video controls src=\"https://www.webradiofaro.it/birdgarden/wp-content/uploads/" + filename + "\" type=\"video/mp4\"></video></figure><p>Temperatura: " + temperatura + "<br>Luce: " + luce + "<br>Rumore: " + audio + "<br>Distanza: " + sonar + "</p>" 
+     body = "<figure class=\"wp-block-video\"><video controls src=\"https://www.webradiofaro.it/birdgarden/wp-content/uploads/" + filename + "\" type=\"video/mp4\"></video></figure><p>ID: " + ts + "<br>Temperatura: " + temperatura + "<br>Luce: " + luce + "<br>Rumore: " + audio + "<br>Distanza: " + sonar + "</p>" 
      #video upload
      media_id = postmedia4video(url, media, filename, wordpress_auth_media)
      #post creation
