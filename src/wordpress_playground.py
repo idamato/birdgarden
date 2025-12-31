@@ -19,7 +19,7 @@ wp_pw = "INSERT-WORDPRESS-APPLICATION-PASSWORD"
 # Esempio da adeguare al contesto
 url = "www.webradiofaro.it/birdgarden" #you set the root domain of your WordPress site
 # costruisco il nome del file con i separatori
-filename = seriale + "." + datafile + "_" + media 
+filename = seriale + "." + media 
 categories = [2] # birdgarden
 tags = [3] #identificare il tag con la CPUID (seriale) del Raspberry mittente, creato al momento dell'iscrizione
 
