@@ -95,7 +95,7 @@ while True:
         capture_config = camera.create_still_configuration()
         # salva data/ora corrente in formato %Y%m%d-%H%M%S nella variabile
         valdata = datetime.now().strftime("%Y%m%d-%H%M%S")
-        filename = "/usr/local/birdgarden/departures/" + str(valdata) "_" + str(id) + "_" + str(luce) + "_" + str(temperatura) + "_" + str(audio) + "_" + str(sonar)
+        filename = "/usr/local/birdgarden/departures/" + str(valdata) + "_" + str(id) + "_" + str(luce) + "_" + str(temperatura) + "_" + str(audio) + "_" + str(sonar)
         # flash_led.on()
         camera.set_controls({"AfMode": controls.AfModeEnum.Continuous, "AfSpeed": controls.AfSpeedEnum.Fast})
         # attendo un secondo per la messa a fuoco
