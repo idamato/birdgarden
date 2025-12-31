@@ -46,7 +46,7 @@ for item in $(ls -1); do
     DATAFOTO=$(echo $item | cut -f 1 -d "_")
     NOMEFILE=$(echo $item | cut -f 2- -d "_")
     # esegue la pubblicazione dell'articolo in wordpress poiché c'è connessione internet
-    /usr/bin/python ../wordpress_playground.py $CPUID $DATAFOTO $NOMEFILE && mv $item ../sent/
+    /usr/bin/python ../wordpress_playground.py $CPUID $DATAFOTO $item && mv $item ../sent/
   else
     # linea internet assente o non funzionante
     echo "Ho $DEPARTURES file da spedire ma non trovo connessione con internet"
