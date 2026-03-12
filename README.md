@@ -47,6 +47,47 @@ Per il collegamento via seriale abbiamo utilizzato il comando: tio /dev/ttyUSB0,
 ## Configurazione iniziale
 
 Tenete a mente che durante il primo avvio il sistema opera delle configurazioni automatiche ed esegue anche un riavvio automatico, quindi impiega necessariamente più tempo a partire rispetto ad una normale procedura, come accadrà in seguito. Se tutto è andato a buon fine avrete a video la richiesta di login, oppure il desktop del sistema Raspian OS, se avete installato la versione desktop. In tal caso potrete aprire una finestra terminale per proseguire con le attività di configurazione descritte nel seguito.
+Per agevolare le attività di configurazione è possibile attivare il collegamento via USB direttamente da un computer ospitante, utilizzando un cavo USB collegato alla porta USB dati del Raspberry (ricordiamo che una delle due porte consente solo l'alimentazione del dispositivo). Per utilizzare questa utile modalità tuttavia occorre fare alcune modifiche ai file di configurazione dell'immmagine appena creata, ovvero:
+
+~~~
+nel file /boot/firmware/config.txt assicurarsi che vi siano le seguenti istruzioni
+...
+dtoverlay=dwc2
+enable_uart=1
+...
+
+nel file /boot/firmware/cmdline.txt aggiungere in coda alla unica riga di comando esistente la seguente stringa
+modules-load=dwc2,g_ether,g_serial
+~~~
+
+Inoltre occorre definire un file unit per il servizio getty che abilita il login sulla ttyGS0, quindi create il file /etc/systemd/system/serial-getty@ttyGS0.service con il seguente contenuto
+
+~~~
+[Service]
+ExecStart=-/sbin/agetty -o '-p -- \u' --keep-baud 115200,57600,38400,9600 ttyGS0 vt102
+Type=idle
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+~~~
+
+Ed abilitare il servizio appena definito con i seguenti comandi:
+
+~~~
+sudo systemctl enable serial-getty@ttyGS0.service
+sudo systemctl start serial-getty@ttyGS0.service
+~~~
+
+Ci sono alcuni comandi che possono essere utilizzati per risolvere eventuali problematiche:
+
+~~~
+ip addr show usb0
+dmesg | grep usb
+ifconfig usb0
+sudo ifconfig usb0 up
+sudo journalctl -k | grep ether 
+~~~
 
 Eseguire le operazioni seguenti:
 
