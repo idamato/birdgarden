@@ -57,7 +57,7 @@ enable_uart=1
 ...
 
 nel file /boot/firmware/cmdline.txt aggiungere in coda alla unica riga di comando esistente la seguente stringa
-modules-load=dwc2,g_ether,g_serial
+modules-load=dwc2,g_serial
 ~~~
 
 Inoltre occorre definire un file unit per il servizio getty che abilita il login sulla ttyGS0, quindi create il file /etc/systemd/system/serial-getty@ttyGS0.service con il seguente contenuto
@@ -79,14 +79,13 @@ sudo systemctl enable serial-getty@ttyGS0.service
 sudo systemctl start serial-getty@ttyGS0.service
 ~~~
 
-Ci sono alcuni comandi che possono essere utilizzati per risolvere eventuali problematiche:
+Ci sono alcuni comandi che possono essere utilizzati per risolvere eventuali problematiche con la linea seriale:
 
 ~~~
-ip addr show usb0
-dmesg | grep usb
-ifconfig usb0
-sudo ifconfig usb0 up
-sudo journalctl -k | grep ether 
+lsmod | grep g_serial
+sudo modprobe g_serial
+dmesg | grep -i usb
+dmesg | grep -i g_serial
 ~~~
 
 Eseguire le operazioni seguenti:
