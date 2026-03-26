@@ -9,7 +9,7 @@ from datetime import datetime
 # from gpiozero import LED
 # from gpiozero import MotionSensor
 
-# funzione per la gestione della lettura dei dati dalla porta seriale
+# funzione per la gestione della lettura dei dati dalla porta seriale a cui è collegato il micro:bit
 porta = '/dev/ttyACM0'
 baudrate = 115200
 
@@ -48,20 +48,21 @@ def arresta_sistema():
 
 # inizializza la fotocamera
 camera = Picamera2()
-# l'anodo del LED (gamba lunga) è collegato al GPIO 17
+# nel caso di utilizzo di un LED infrarossi, l'anodo del LED (gamba lunga) è collegato al GPIO 17
 # fra il catodo (gamba corta) e GROUND è necessario collegare una resistenza di almeno 100 ohm
 # flash_led = LED(17)
 # nel caso di utilizzo di motion sensor
 # sensor = MotionSensor(14)
 
 id = 0
+
 # capture_config = camera.create_still_configuration(main={"size":(1920, 1080)}, lores={"size":(640,480)})
 
 # imposta il modo autofocus nel continuo
 # camera.set_controls({"AfMode": controls.AfModeEnum.Continuous})
 
 # imposta il modo autofocus con alta velocità
-#camera.set_controls({"AfMode": controls.AfModeEnum.Continuous, "AfSpeed": controls.AfSpeedEnum.Fast})
+# camera.set_controls({"AfMode": controls.AfModeEnum.Continuous, "AfSpeed": controls.AfSpeedEnum.Fast})
 
 # imposta il focus in modalità manuale a 10cm, il minimo
 # camera.set_controls({"AfMode": controls.AfModeEnum.Manual, "LensPosition": 10.0})
