@@ -1,5 +1,4 @@
 #!/usr/bin/python
-
 from time import sleep
 from picamera2 import Picamera2
 from libcamera import controls
