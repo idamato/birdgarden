@@ -157,3 +157,14 @@ $ sudo bash install_rpi.sh
 ![Rpi-Serial-Camera](./images/schema.png)
 
 Ci sono inoltre una serie di aspetti di configurazione che sono stati curati all'interno del portale https://www.webradiofaro.it/birdgarden/ che utilizza Wordpress. In particolare deve essere creato un utente/ruolo specifico associato al dispositivo in modo che nello stesso portale possano concorrere le pubblicazioni di tutti i dispositivi. Oltre all'utente deve essere anche creata una chiave applicativa legata all'applicazione Birdgarden e con essa si avranno le credenziali da inserire nello scirpt Python per l'invio dati. Uno specifico tag verrà associato alla CPUID del dispositivo Raspberry Pi Zero 2W e le coordinate geografiche dovranno essere fornite affinché sia attivato il puntamento all'interno della mappa.
+
+E' stato aggiunto al progetto il file test-video-microphone.py che consente di verificare il buon funzionamento del microfono (USB PnP) collegato al Raspberry sul device hw:1,0. Per rilevare il device corretto usare il comando `arecord -l` che fornirà un output di questo tipo:
+
+~~~
+**** List of CAPTURE Hardware Devices ****
+card 1: Device [USB PnP Sound Device], device 0: USB Audio [USB Audio]
+  Subdevices: 1/1
+  Subdevice #0: subdevice #0
+~~~
+
+Quindi nel sorgente del programma andare a sostituire il device con quello corretto: `audio_device = "hw:1,0"`. Avviando il programma con il comando `python test-video-microphone.py`, se non ci sono errori verrà creato un file con audio e video in /tmp/registrazione.mp4
