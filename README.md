@@ -168,3 +168,17 @@ card 1: Device [USB PnP Sound Device], device 0: USB Audio [USB Audio]
 ~~~
 
 Quindi nel sorgente del programma andare a sostituire il device con quello corretto: `audio_device = "hw:1,0"`. Avviando il programma con il comando `python test-video-microphone.py`, se non ci sono errori verrà creato un file con audio e video in /tmp/registrazione.mp4
+Se il test è andato a buon fine potete modificare il contenuto di serialandphoto.py e andare a togliere i commenti alle righe che riguardano l'utilizzo dell'audio, in particolare occorre caricare le librerie H264Encoder e PyavOutput, commentare la riga che esegue la cattura del video: `camera.start_and_record_video(filename + ".mp4", duration=30)` e togliere il commento alle seguenti:
+
+~~~
+audio_device = "hw:1,0"
+...
+# video_config = picam2.create_video_configuration({'size': (1280, 720), 'format': 'YUV420'})
+camera.configure(video_config)
+encoder = H264Encoder(bitrate=6_000_000)
+encoder.audio = True
+output = PyavOutput(filename + ".mp4")
+camera.start_recording(encoder, output)
+time.sleep(30)  # durata registrazione
+camera.stop_recording()
+~~~
