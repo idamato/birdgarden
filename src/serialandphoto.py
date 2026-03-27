@@ -5,7 +5,12 @@ from picamera2 import Picamera2
 from libcamera import controls
 import serial
 import os
+import subprocess
 from datetime import datetime
+# Caricare le due seguenti righe solo se disponibile anche il microfono
+# from picamera2.encoders import H264Encoder
+# from picamera2.outputs import PyavOutput
+
 # from gpiozero import LED
 # from gpiozero import MotionSensor
 
@@ -73,6 +78,9 @@ id = 0
 # capture_config = camera.create_still_configuration()
 # camera.configure(capture_config)
 
+# uncomment this line if you want to record audio and set the appropriate device
+# audio_device = "hw:1,0"
+
 print ("Hello this is the start!")
 
 while True:
@@ -105,6 +113,15 @@ while True:
         camera.switch_mode_and_capture_file(capture_config, filename + ".jpg")
         # in caso di video
         camera.start_and_record_video(filename + ".mp4", duration=30)
+        # in caso di video + audio commentare la riga precedente e usare le seguenti
+        # video_config = picam2.create_video_configuration({'size': (1280, 720), 'format': 'YUV420'})
+        # camera.configure(video_config)
+        # encoder = H264Encoder(bitrate=6_000_000)
+        # encoder.audio = True
+        # output = PyavOutput(filename + ".mp4")
+        # camera.start_recording(encoder, output)
+        # time.sleep(30)  # durata registrazione
+        # camera.stop_recording()
         # flash_led.off()
         camera.stop()
         print('missione compiuta: ', filename)
