@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# DOC: https://pip-assets.raspberrypi.com/categories/652-raspberry-pi-camera-module-2/documents/RP-008156-DS-2-picamera2-manual.pdf
 import subprocess
 import time
 from picamera2 import Picamera2
