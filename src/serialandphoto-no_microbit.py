@@ -1,22 +1,23 @@
-import RPi.GPIO as GPIO
-import time
+#!/usr/bin/python
+from picamera2 import Picamera2
+from libcamera import controls
+import serial
+import os
+import subprocess
+from datetime import datetime
+from time import sleep
 
-# -----------------------------
-# CONFIGURAZIONE
-# -----------------------------
+# Le seguenti righe hanno senso solo se il sonar è collegato direttamente al Raspberry
+import RPi.GPIO as GPIO
 TRIG = 23
 ECHO = 24
-
 SOGLIA_CM = 30        # distanza limite
 PERIODO_LETTURA = 2   # secondi tra letture
-
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(TRIG, GPIO.OUT)
 GPIO.setup(ECHO, GPIO.IN)
-
 GPIO.output(TRIG, False)
 time.sleep(2)  # stabilizzazione sensore
-
 
 def misura_distanza():
     """Restituisce la distanza in cm o None in caso di timeout."""
@@ -45,24 +46,131 @@ def misura_distanza():
     distanza = (durata * 34300) / 2
     return distanza
 
+# Caricare le due seguenti righe solo se disponibile anche il microfono, questa configurazione può essere possibile solo con il sonar collegato direttamente al Raspberry
+# from picamera2.encoders import H264Encoder
+# from picamera2.outputs import PyavOutput
 
-def loop_principale():
-    """Loop principale a basso consumo CPU."""
+# Caricare le due seguenti righe solo se disponibile il LED infrarosso e il MotionSensor (configurazione non testata)
+# from gpiozero import LED
+# from gpiozero import MotionSensor
+
+# Se il sonar è collegato direttamente al Raspberry non ci sarà alcun collegamento seriale, pertanto tutto il codice per la comunicazione con la porta seriale dovrà essere commentato
+'''
+# funzione per la gestione della lettura dei dati dalla porta seriale a cui è collegato il micro:bit
+porta = '/dev/ttyACM0'
+baudrate = 115200
+def leggi_dati_seriale(porta, baudrate):
+    while True:
+        try:
+            # Apertura della connessione seriale
+            with serial.Serial(porta, baudrate, timeout=1) as ser:
+                # print(f"Connesso a {porta} a {baudrate} baud.")
+                while True:
+                    # Lettura dei dati
+                    dati = ser.readline().decode('utf-8').rstrip()
+                    if dati:
+                        return dati
+
+        except serial.SerialException as e:
+            # Gestione errore di connessione
+            print(f"Errore di connessione: {e}")
+            print("Tentativo di riconnessione tra 5 minuti...")
+            sleep(300)  # Attendi 5 minuti e riprova
+
+# ser = serial.Serial('/dev/ttyACM0', 115200, timeout=1)
+# la funzione verifica se è arrivato il comando di shutdown
+def verifica_halt(array):
+    if len(array) == 5 and all(elemento == '0' for elemento in array):
+        return True
+    return False
+
+# funzione che impartisce il comando di chiusura del sistema
+def arresta_sistema():
     try:
-        while True:
-            dist = misura_distanza()
+        # Esegue il comando di halt
+        os.system("sudo shutdown -h now")
+    except Exception as e:
+        print(f"Si è verificato un errore: {e}")
+'''
 
-            if dist is not None and dist < SOGLIA_CM:
+# inizializza la fotocamera
+camera = Picamera2()
+# nel caso di utilizzo di un LED infrarossi, l'anodo del LED (gamba lunga) è collegato al GPIO 17
+# fra il catodo (gamba corta) e GROUND è necessario collegare una resistenza di almeno 100 ohm
+# flash_led = LED(17)
+# nel caso di utilizzo di motion sensor
+# sensor = MotionSensor(14)
+
+id = 0
+
+# capture_config = camera.create_still_configuration(main={"size":(1920, 1080)}, lores={"size":(640,480)})
+
+# imposta il modo autofocus nel continuo
+# camera.set_controls({"AfMode": controls.AfModeEnum.Continuous})
+
+# imposta il modo autofocus con alta velocità
+# camera.set_controls({"AfMode": controls.AfModeEnum.Continuous, "AfSpeed": controls.AfSpeedEnum.Fast})
+
+# imposta il focus in modalità manuale a 10cm, il minimo
+# camera.set_controls({"AfMode": controls.AfModeEnum.Manual, "LensPosition": 10.0})
+
+# imposta la cattura di tre immagini consecutive
+# camera.start_and_capture_files("fastfocus{:d}.jpg", num_files=3, delay=0.5)
+
+# capture_config = camera.create_still_configuration()
+# camera.configure(capture_config)
+
+# uncomment this line if you want to record audio and set the appropriate device
+# audio_device = "hw:1,0"
+
+print ("Hello this is the start!")
+
+while True:
+    # rcv = ser.readline()
+    # cmd = rcv.decode('utf-8').rstrip()
+    # cmd = leggi_dati_seriale(porta, baudrate)
+    
+    # leggo la distanza dal sensore collegato al Raspberry
+    dist = misura_distanza()
+    if dist is not None and dist < SOGLIA_CM:
                 print(f"Ostacolo a {dist:.1f} cm")
-              
-                '''Inserire qui il codice principale'''
-
-            time.sleep(PERIODO_LETTURA)
-
-    except KeyboardInterrupt:
-        pass
-    finally:
-        GPIO.cleanup()
-
-if __name__ == "__main__":
-    loop_principale()
+                values = [0,0,0,1,dist]
+    
+    if len(values) == 5: 
+      luce, temperatura, audio, pin0, sonar = [int(value) for value in values]
+      print(luce, temperatura, audio, pin0, sonar)
+      if verifica_halt(values):
+         # Execute the sudo halt command
+         print('devo arrestare il sistema')
+         arresta_sistema()
+      if pin0:
+        id += 1
+        print('fare foto!')
+        camera.start()
+        # capture_config = camera.create_still_configuration(main={"size":(1920, 1080)}, lores={"size":(640,480)})
+        capture_config = camera.create_still_configuration()
+        # salva data/ora corrente in formato %Y%m%d-%H%M%S nella variabile
+        valdata = datetime.now().strftime("%Y%m%d-%H%M%S")
+        filename = "/usr/local/birdgarden/departures/" + str(valdata) + "_" + str(id) + "_" + str(luce) + "_" + str(temperatura) + "_" + str(audio) + "_" + str(sonar)
+        # flash_led.on()
+        camera.set_controls({"AfMode": controls.AfModeEnum.Continuous, "AfSpeed": controls.AfSpeedEnum.Fast})
+        # attendo un secondo per la messa a fuoco
+        sleep(1)
+        # esegue la foto
+        camera.switch_mode_and_capture_file(capture_config, filename + ".jpg")
+        # in caso di video
+        camera.start_and_record_video(filename + ".mp4", duration=30)
+        # in caso di video + audio commentare la riga precedente e usare le seguenti
+        # video_config = picam2.create_video_configuration({'size': (1280, 720), 'format': 'YUV420'})
+        # camera.configure(video_config)
+        # encoder = H264Encoder(bitrate=6_000_000)
+        # encoder.audio = True
+        # output = PyavOutput(filename + ".mp4")
+        # camera.start_recording(encoder, output)
+        # time.sleep(30)  # durata registrazione
+        # camera.stop_recording()
+        # flash_led.off()
+        camera.stop()
+        print('missione compiuta: ', filename)
+      # sleep(1)
+done
