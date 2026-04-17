@@ -35,8 +35,8 @@ print("Filename: " + filename)
 
 values = filename.split('.')
 significativi = values[1].split('_')
-ts, luce, temperatura, audio, sonar = [(value) for value in significativi]
-print(ts, luce, temperatura, audio, sonar)
+datacmp, ts, luce, temperatura, audio, sonar = [(value) for value in significativi]
+print(datacmp, ts, luce, temperatura, audio, sonar)
 
 # authentication
 wordpress_head_post = wordpress_header(wp_user, wp_pw)[0]
