@@ -28,7 +28,7 @@ Il notebook è un adattamento del tutorial Sony per creare un modello personaliz
 
 ### Verifica della versione di Python
 
-La prima cella controlla `sys.version_info` e interrompe l'esecuzione se l'ambiente non usa **Python 3.11**. Il notebook è predisposto per Google Colab; i metadati dell'esecuzione salvata riportano un runtime Colab con GPU T4. Una macchina locale solo CPU può eseguire parti del flusso, ma l'addestramento può richiedere più tempo e la compatibilità delle dipendenze va verificata.
+La prima cella controlla `sys.version_info` e interrompe l'esecuzione se l'ambiente non usa **Python 3.11**. Il notebook è predisposto per Google Colab; i metadati dell'esecuzione salvata riportano un runtime Colab con GPU T4 ed un runtime 2025.07. Una macchina locale solo CPU può eseguire parti del flusso, ma l'addestramento può richiedere più tempo e la compatibilità delle dipendenze va verificata.
 
 ### Installazione dei pacchetti
 
@@ -289,7 +289,7 @@ This notebook adapts Sony's tutorial for creating a custom model for the **Raspb
 
 ### Python version check
 
-The first code cell checks `sys.version_info` and raises an error unless the runtime uses **Python 3.11**. The notebook is designed for Google Colab; the saved notebook metadata records a Colab runtime with a T4 GPU. A CPU-only machine can run parts of the workflow, but training may take longer and dependency compatibility must be checked.
+The first code cell checks `sys.version_info` and raises an error unless the runtime uses **Python 3.11**. The notebook is designed for Google Colab; the saved notebook metadata records a Colab runtime with a T4 GPU and a runtime 2025.07. A CPU-only machine can run parts of the workflow, but training may take longer and dependency compatibility must be checked.
 
 ### Installing packages
 
