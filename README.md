@@ -158,7 +158,8 @@ $ sudo apt install -y imx500-all
 $ git clone https://github.com/idamato/birdgarden/
 ~~~
 
-e procedere all'esecuzione dello script di installazione
+il comando appena dato copia nel raspberry anche delle cartelle che non ci occorrono ed occupano spazio inutile, sono state usate per il training e quindi potreste rimuoverle, si tratta di MyDrive, di colab-notebook e di drawings.
+Fatto questo potete procedere all'esecuzione dello script di installazione
 
 ~~~bash
 $ cd birdgarden
