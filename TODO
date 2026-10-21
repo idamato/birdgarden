@@ -8,6 +8,7 @@ Questo aiuta a verificare l'integrità del messaggio trasmesso.
 """
 return sum(message.encode()) % 256
 
+#
 
 # Server 1 (Device A)
 import machine
