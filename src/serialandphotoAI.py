@@ -5,6 +5,7 @@ from typing import Any
 import serial
 import time
 import os
+import logging
 import subprocess
 import argparse
 import numpy as np
@@ -18,6 +19,13 @@ import meshtastic.serial_interface
 
 # from gpiozero import LED
 # from gpiozero import MotionSensor
+
+logging.basicConfig(
+    level = logging.DEBUG,
+    format = "%(asctime)s [%(levelname)s] %(message)s"
+)
+
+logging.debug("Avvio del programma")
 
 try:
     # Current Picamera2 API.
@@ -289,6 +297,7 @@ def verifica_halt(array):
 def arresta_sistema():
     try:
         # Esegue il comando di halt
+        logging.debug("Chiudo il sistema come richiesto")
         os.system("sudo shutdown -h now")
     except Exception as e:
         print(f"Si è verificato un errore: {e}")
@@ -341,6 +350,7 @@ while True:
       if pin0:
         id += 1
         print('fare foto!')
+        logging.debug("Avvio la foto!")
         # capture_config = camera.create_still_configuration(main={"size":(1920, 1080)}, lores={"size":(640,480)})
         # capture_config = camera.create_still_configuration()
         #capture_config = camera.create_still_configuration(main={"size": (1920, 1080)})
@@ -391,10 +401,12 @@ while True:
         # Example use in program logic:
         if score >= 0.80:
             print("Risultato con punteggio elevato.")
+            logging.debug("Risultato con punteggio elevato")
             testo_messaggio = f"Rilevamento attendibile\nTemp: {temperatura}C Luce: {luce}\n"
             testo_messaggio += f"Rumore: {audio} Distanza: {sonar}cm\n"
         else:
             print("Risultato incerto: potrebbe essere utile acquisire un'altra immagine.")
+            logging.debug("Risultato incerto potrebbe essere utile acquisire altre immagini")
             testo_messaggio = f"Rilevamento incerto\nTemp: {temperatura}C Luce: {luce}\n"
             testo_messaggio += f"Rumore: {audio} Distanza: {sonar}cm\n"
         # All ranked species and scores are available to the caller:
@@ -420,7 +432,9 @@ while True:
             time.sleep(3)  # Lascia il tempo per la trasmissione
             interface.close()
             print("Messaggio LoRa inviato con successo!")
+            logging.debug("Messaggio LoRa inviato con successo!")
         except Exception as e:
             print(f"Si è verificato un errore con LoRa: {e}")
+            logging.debug("ERRORE invio LoRa")
       # sleep(1)
 done
