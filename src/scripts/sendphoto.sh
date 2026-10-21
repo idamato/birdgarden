@@ -45,8 +45,20 @@ for item in $(ls -1); do
     # estrapolo la data del file
     DATAFOTO=$(echo $item | cut -f 1 -d "_")
     NOMEFILE=$(echo $item | cut -f 2- -d "_")
-    # esegue la pubblicazione dell'articolo in wordpress poiché c'è connessione internet
-    /usr/bin/python ../wordpress_playground.py $CPUID $DATAFOTO $item && mv $item ../sent/
+    MSGDIR="/msg/"
+    MSGFILE="${WORKDIR}${MSGDIR}"
+    MSGFILE+=$(echo $item | cut -f 1 -d ".")
+    MSGFILE+=".txt"
+    echo $MSGFILE
+    if [ -f $MSGFILE ]; then
+      echo "MSGFILE trovato: $MSGFILE"
+      # esegue la pubblicazione dell'articolo in wordpress poiché c'è connessione internet
+      /usr/bin/python ../wordpress_playground.py $CPUID $DATAFOTO $item $MSGFILE && mv $item ../sent/
+    else
+      echo "MSGFILE non trovato: $MSGFILE"
+      # esegue la pubblicazione dell'articolo in wordpress poiché c'è connessione internet
+      /usr/bin/python ../wordpress_playground.py $CPUID $DATAFOTO $item NO-AI && mv $item ../sent/
+    fi
   else
     # linea internet assente o non funzionante
     echo "Ho $DEPARTURES file da spedire ma non trovo connessione con internet"

@@ -1,3 +1,0 @@
-d /tmp/ramdisk/logs/ 0755 birdgarden birdgarden
-d /tmp/ramdisk/departures/ 0755 birdgarden birdgarden
-f /tmp/ramdisk/.temptest 0755 birdgarden birdgarden - birdgarden

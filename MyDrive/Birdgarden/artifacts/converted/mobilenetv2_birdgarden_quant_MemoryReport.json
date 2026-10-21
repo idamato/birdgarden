@@ -1,0 +1,22 @@
+{
+  "Memory Report": {
+    "Name": "mobilenetv2_birdgarden_quant",
+    "Runtime Memory Physical Size": "1.60MB",
+    "Model Memory Physical Size": "2.29MB",
+    "Reserved Memory": "1.00KB",
+    "Memory Usage": "3.89MB",
+    "Total Memory Available On Chip": "8.00MB",
+    "Memory Utilization": "49%",
+    "Fit In Chip": true,
+    "Input Persistent": true,
+    "Networks": [
+      {
+        "Hash": "mobilenetv2_birdgarden_quant",
+        "Name": "mobilenetv2_birdgarden_quant",
+        "Runtime Memory Physical Size": "1.60MB",
+        "Model Memory Physical Size": "2.29MB",
+        "Input Persistence Cost": "151.00KB"
+      }
+    ]
+  }
+}

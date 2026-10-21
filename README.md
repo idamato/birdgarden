@@ -10,6 +10,11 @@ Il progetto Birdgarden 2.0 mira alla realizzazione di una casetta/nido o mangiat
 
 ![Birgaren 2.0 Logo](./images/birdhouse.jpg)
 
+Il progetto negli anni ha subito diverse evoluzioni che hanno consentito di sperimentare soluzioni di invio dati differenti, in particolare:
+- nel 2025 si è sperimentata la spedizione delle immagini via radio VHF per mezzo del modo FM SSTV, lo stesso utilizzato dalla stazione spaziale internazionale per inviare immagini dello spazio ai radioamatori
+- nel 2026 si è sperimentata la spedizione di un messaggio di testo attraverso la rete off-grid Meshtastic ed i dispositivi LoRa. Il messaggio contiene una probabilità di riconoscimento della specie fotografata basata su IA, utilizzando un modello adatto alla Raspberry AI camera. A scopo dimostrativo per la Maker Faire 2026 il modello è stato allenato su 5 specie di uccelli.
+ 
+## Attività di setup iniziali per l'uso del Raspberry pi zero 2W
 
 Per l'inizializzazione del dispositivo al primo utilizzo sono necessarie alcune attività per le quali è necessario collegare al dispositivo un monitor o TV tramite il cavo HDMI ed una tastiera+mouse tramite il cavo USB aggiuntivo.
 
@@ -47,6 +52,7 @@ Per il collegamento via seriale abbiamo utilizzato il comando: tio /dev/ttyUSB0,
 ## Configurazione iniziale
 
 Tenete a mente che durante il primo avvio il sistema opera delle configurazioni automatiche ed esegue anche un riavvio automatico, quindi impiega necessariamente più tempo a partire rispetto ad una normale procedura, come accadrà in seguito. Se tutto è andato a buon fine avrete a video la richiesta di login, oppure il desktop del sistema Raspian OS, se avete installato la versione desktop. In tal caso potrete aprire una finestra terminale per proseguire con le attività di configurazione descritte nel seguito.
+
 Per agevolare le attività di configurazione è possibile attivare il collegamento via USB direttamente da un computer ospitante, utilizzando un cavo USB collegato alla porta USB dati del Raspberry (ricordiamo che una delle due porte consente solo l'alimentazione del dispositivo). Per utilizzare questa utile modalità tuttavia occorre fare alcune modifiche ai file di configurazione dell'immmagine appena creata, ovvero:
 
 ~~~
@@ -103,26 +109,14 @@ $ apt update -y \
 > [!NOTE] 
 > Questo task può durare anche 30 minuti
 
+## Configurazione per la trasmissione radio FM SSTV
+
 Occorre fornire al sistema un nuovo dispositivo audio differente da quello dell'uscita HDMI. l'indicazione che vogliamo un ulteriore dispositivo di uscita per l'audio e che quindi debba essere redirezionato sui pin GPIO 18 e 13 in modalità PWM
 
 ~~~bash
 gpio=18,13,a5
 audio_pwm_mode=2
 dtoverlay=audremap,pins_18_13
-~~~
-
-Terminato l'operazione è consigliato effettuare il riavvio
-
-Procedere all'installazione delle dipendenze
-
-~~~bash
-$ sudo apt update && \
-  sudo apt install -y python3-picamera2\
-                      ffmpeg \
-                      git \
-                      python3-serial \
-                      python3-setuptools \
-                      imagemagick
 ~~~
 
 Occorre installare anche il modulo Python pysstv se si vuole utilizzare la trasmissione in SSTV, seguire i passaggi elencati nel seguito
@@ -135,28 +129,55 @@ $ python setup.py build
 $ sudo python setup.py install
 ~~~
 
-Terminata l'installazione effettuare il clone di questo repository all'interno della RPi
+Terminato l'operazione è consigliato effettuare il riavvio
+
+## Prima installazione del software da riga di comando
+
+Procedere all'installazione delle dipendenze
+
+~~~bash
+$ sudo apt update && \
+  sudo apt install -y python3-picamera2\
+                      ffmpeg \
+                      git \
+                      python3-serial \
+                      python3-setuptools \
+                      imagemagick \
+~~~
+
+Nel caso l'installazione preveda l'uso della Raspberry AI camera ed i dispositivi LoRa, occorre installare del software aggiuntivo 
+
+~~~bash
+$ sudo apt install -y imx500-all
+                      python3-opencv
+                      python3-munkres
+                      python3-meshtastic
+~~~
 
 ~~~bash
 $ git clone https://github.com/idamato/birdgarden/
 ~~~
 
-e procedere all'installazione
+e procedere all'esecuzione dello script di installazione
 
-~~~
+~~~bash
 $ cd birdgarden
 $ sudo bash install_rpi.sh
 ~~~
 
+## Cose da fare prima di utilizzare il dispositivo
 
 - modificare username e password e identificativo TAG con la CPUID nel file wordpress_playground.py secondo le indicazioni ricevute al momento dell'adesione al progetto. (Viene creato un account all'interno del portale Birdgarden 2.0 con le credenziali per la pubblicazione delle foto/video dal dispositivo)
 - eseguire il test del focus della fotocamera sulla vostra installazione. Dovete prima disattivare il servizio con il comando: `sudo systemctl stop photo.service` (potrete poi riavviarlo con il comando di start) e di seguito date il comando: `python3 test-camera-focus.py`; tenete presente che se state utilizzando il terminale senza grafica dovrete prima modificare lo script impostando la preview a False. Tenete a mente che ogni modello di camera ha le sue caratteristiche.
+- Se state utilizzando una Raspberry AI camerea eseguire il test del focus della fotocamera sulla vostra installazione. Dovete prima disattivare il servizio con il comando: `sudo systemctl stop photoAI.service` (potrete poi riavviarlo con il comando di start) e di seguito date il comando: `python3 test-camera-focus-imx500.py`; tenete presente che se state utilizzando il terminale senza grafica dovrete prima modificare lo script impostando la preview a False. Tenete a mente che ogni modello di camera ha le sue caratteristiche.
 - collegare anche il dispositivo micro:bit caricandovi il codice `serial_data_logger.py` tramite il sito [Makecode](makecode.microbit.org).
 - Se si desidera modificare la configurazione del WiFi si può procedere nel modo seguente: eseguire il comando: `sudo nmtui`, ed abilitare la rete wifi di interesse.
 
 ![Rpi-Serial-Camera](./images/schema.png)
 
 Ci sono inoltre una serie di aspetti di configurazione che sono stati curati all'interno del portale https://www.webradiofaro.it/birdgarden/ che utilizza Wordpress. In particolare deve essere creato un utente/ruolo specifico associato al dispositivo in modo che nello stesso portale possano concorrere le pubblicazioni di tutti i dispositivi. Oltre all'utente deve essere anche creata una chiave applicativa legata all'applicazione Birdgarden e con essa si avranno le credenziali da inserire nello scirpt Python per l'invio dati. Uno specifico tag verrà associato alla CPUID del dispositivo Raspberry Pi Zero 2W e le coordinate geografiche dovranno essere fornite affinché sia attivato il puntamento all'interno della mappa.
+
+## APPENDICE per l'utilizzo di un microfono USB
 
 E' stato aggiunto al progetto il file test-video-microphone.py che consente di verificare il buon funzionamento del microfono (USB PnP) collegato al Raspberry sul device hw:1,0. Per rilevare il device corretto usare il comando `arecord -l` che fornirà un output di questo tipo:
 
@@ -181,4 +202,15 @@ output = PyavOutput(filename + ".mp4")
 camera.start_recording(encoder, output)
 time.sleep(30)  # durata registrazione
 camera.stop_recording()
+~~~
+
+## APPENDICE per utilizzo LoRa e Meshtastic
+
+Vi ricordiamo che il dispositivo LoRa deve essere prima configurato correttamente, vi suggeriamo di consultare il sito Darkmesh https://darkmesh.neocities.org per l'utilizzo di Meshtastic, inoltre nella directory MyDrive abbiamo inserito un APK di Darkmesh personalizzato nella grafica per il Birdgarden da Salvatore dei Bardi che ringraziamo!
+In Meshtastic abbiamo creato un canale pubblico per lo scambio dei messaggi tra i dispositivi, per il quale nella nostra configurazione viene utilizzato l'indice 2, potrebbe variare nel vostro caso. Anche la porta seriale USB collegata al Raspberry, dipende dal numero di dispositivi che avete collegato, per noi è /dev/ttyUSB0
+Per eseguire un semplice test del vostro dispositivo LoRa potete utilizzare i comandi seguenti.
+
+~~~bash
+$ meshtastic --info
+$ meshtastic --ch-index 2 --port /dev/ttyUSB0 --sendtext "Cip cip"
 ~~~

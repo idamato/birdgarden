@@ -2,7 +2,6 @@
 
 
 # Verificare che l'id sia 1 aka root
-
 # Creazione utente
 
 groupadd -g 192 birdgarden
@@ -15,6 +14,7 @@ mkdir -p /var/log/birdgarden/
 mkdir -p /usr/local/birdgarden/departures/
 mkdir -p /usr/local/birdgarden/sent/
 mkdir -p /usr/local/birdgarden/sentviaradio/
+mkdir -p /usr/local/birdgarden/msg/
 
 chmod 755 -R /usr/local/birdgarden/
 
@@ -28,17 +28,20 @@ cp src/*.py /usr/local/birdgarden/
 cp -a  src/scripts/ /usr/local/birdgarden/
 chmod +x /usr/local/birdgarden/*.py /usr/local/birdgarden/scripts/*.sh
 cp -rp images/ /usr/local/birdgarden/
+cp -rp src/model/ /usr/local/birdgarden/
 chown -R birdgarden:birdgarden /usr/local/birdgarden/images
+chown -R birdgarden:birdgarden /usr/local/birdgarden/model
 
 cp src/logrotate/* /etc/logrotate.d
 
 # Installazione unit systemd  src/systemd/photo.service
-
+# In caso di AI camera modificare con photoAI.service
 cp src/systemd/photo.service /etc/systemd/system
 
 chown birdgarden:birdgarden /usr/local/birdgarden/ -R
 
 systemctl daemon-reload
+# In caso di AI camera modificare con photoAI.service
 systemctl enable photo.service
 systemctl start photo.service
 
