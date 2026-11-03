@@ -18,11 +18,11 @@ This is a brainstorming file where to put your immagination about the possible f
 6) Ham radio SSTV mode as a new option for sending images
     a) There is a Python module which enable image transformation into wav files
        Some instruction require installation of specific libraries, check inside GitHub repository of every library or software.
-       The following may be needed: sudo apt install libgd-dev libmagic-dev
+       The following may be needed: sudo apt install libgd-dev libmagic-dev python3-setuptools mplayer
        a.1)
            The generated audio can be sent as a modulated FM signal over the antenna using PiFM 
            git clone https://github.com/dnet/pySSTV
-           cd pySSTV ; python3 ./setup.y build ; sudo python3 ./setup.py install
+           cd pySSTV ; python3 setup.y build ; sudo python3 setup.py install
            cd <where images are> ; python3 -m pysstv --mode MartinM2 --resize image.png output.wav 
            an image file of 35Kb result in an audio wav file of about 5.5 Mb.
        a.2) Raspberry pi is able to send FM mofulation as RF via a small antenna connected to the GPIO4
