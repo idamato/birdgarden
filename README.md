@@ -12,7 +12,7 @@ Il progetto Birdgarden 2.0 mira alla realizzazione di una casetta/nido o mangiat
 
 Il progetto negli anni ha subito diverse evoluzioni che hanno consentito di sperimentare soluzioni di invio dati differenti, in particolare:
 - nel 2025 si è sperimentata la spedizione delle immagini via radio VHF per mezzo del modo FM SSTV, lo stesso utilizzato dalla stazione spaziale internazionale per inviare immagini dello spazio ai radioamatori
-- nel 2026 si è sperimentata la spedizione di un messaggio di testo attraverso la rete off-grid Meshtastic ed i dispositivi LoRa. Il messaggio contiene una probabilità di riconoscimento della specie fotografata basata su IA, utilizzando un modello adatto alla Raspberry AI camera. A scopo dimostrativo per la Maker Faire 2026 il modello è stato allenato su 5 specie di uccelli.
+- nel 2026 si è sperimentata la spedizione di un messaggio di testo attraverso la rete off-grid Meshtastic ed i dispositivi LoRa con app Darkmesh. Il messaggio contiene una probabilità di riconoscimento della specie fotografata basata su IA, utilizzando un modello adatto alla Raspberry AI camera. A scopo dimostrativo per la Maker Faire 2026 il modello è stato allenato su 5 specie di uccelli.
  
 ## Attività di setup iniziali per l'uso del Raspberry pi zero 2W
 
