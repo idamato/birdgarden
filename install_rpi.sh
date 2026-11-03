@@ -2,49 +2,49 @@
 
 
 # Verificare che l'id sia 1 aka root
-
 # Creazione utente
 
 groupadd -g 192 birdgarden
-useradd  -u 192 -g 192 -s /usr/sbin/nologin -G dialout -d /usr/local/birdgarden/ birdgarden
+useradd  -u 192 -g 192 -s /usr/sbin/nologin -G dialout,video,audio -d /usr/local/birdgarden/ birdgarden
 
 # Creazione /usr/local/birdgarden/
 
 mkdir -p /usr/local/birdgarden/
-mkdir -p /var/logs/birdgarden/logs/
+mkdir -p /var/log/birdgarden/
 mkdir -p /usr/local/birdgarden/departures/
 mkdir -p /usr/local/birdgarden/sent/
+mkdir -p /usr/local/birdgarden/sentviaradio/
+mkdir -p /usr/local/birdgarden/msg/
+
 chmod 755 -R /usr/local/birdgarden/
 
+crontab -u birdgarden src/crontabs/sendphoto
 
 # Dirty Hack ... we need the birdgarden user
-chmod 777 /var/logs/birdgarden/
+chmod 777 /var/log/birdgarden/
 # copia binari
 
 cp src/*.py /usr/local/birdgarden/
 cp -a  src/scripts/ /usr/local/birdgarden/
-chmod +x /usr/local/birdgarden/*.py
+chmod +x /usr/local/birdgarden/*.py /usr/local/birdgarden/scripts/*.sh
+cp -rp images/ /usr/local/birdgarden/
+cp -rp src/model/ /usr/local/birdgarden/
+chown -R birdgarden:birdgarden /usr/local/birdgarden/images
+chown -R birdgarden:birdgarden /usr/local/birdgarden/model
 
 cp src/logrotate/* /etc/logrotate.d
 
 # Installazione unit systemd  src/systemd/photo.service
-
+# In caso di AI camera modificare con photoAI.service
 cp src/systemd/photo.service /etc/systemd/system
 
 chown birdgarden:birdgarden /usr/local/birdgarden/ -R
 
 systemctl daemon-reload
+# In caso di AI camera modificare con photoAI.service
+systemctl enable photo.service
 systemctl start photo.service
-
 
 apt update -y \
   && apt upgrade -y \
   && apt full-upgrade -y
-
-sudo apt update && \
-  sudo apt install -y python3-picamera2\
-                      ffmpeg \
-                      git \
-                      python3-serial
-
-echo 'tmpfs   /tmp/ramdisk    tmpfs  rw,size=30M,nr_inodes=5k,noexec,nodev,nosuid,uid=ubuntu,gid=ubuntu,mode=1700 0 0' >> /etc/fstab

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<dnnParams>
+    <networks>
+        <network name="mobilenetv2_birdgarden_quant" ordinal="0" type="">
+            <inputTensors>
+                <inputTensor persistency="1" ordinal="0" name="image:0" l2Offset="4312032" numOfDimensions="3" bitsPerElement="8" shift="0" scale="0.0078125" format="signed">
+                    <dimensions>
+                        <dimension size="224" serializationOrder="1" ordinal="0" padding="0"/>
+                        <dimension size="224" serializationOrder="0" ordinal="1" padding="0"/>
+                        <dimension size="3" serializationOrder="2" ordinal="2" padding="0"/>
+                    </dimensions>
+                </inputTensor>
+            </inputTensors>
+            <outputTensors>
+                <outputTensor ordinal="0" name="transform-1-bird_species_post_activation:0" l2Offset="4467168" numOfDimensions="1" bitsPerElement="8" shift="0" scale="0.00390625" format="unsigned">
+                    <dimensions>
+                        <dimension size="5" serializationOrder="0" ordinal="0" padding="0"/>
+                    </dimensions>
+                </outputTensor>
+            </outputTensors>
+        </network>
+    </networks>
+    <l2memory totalSize="8388480" coefficientsSize="2402720" reservedMemorySize="1024" networksRuntimeSize="1674240"/>
+</dnnParams>

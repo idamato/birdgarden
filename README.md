@@ -10,6 +10,11 @@ Il progetto Birdgarden 2.0 mira alla realizzazione di una casetta/nido o mangiat
 
 ![Birgaren 2.0 Logo](./images/birdhouse.jpg)
 
+Il progetto negli anni ha subito diverse evoluzioni che hanno consentito di sperimentare soluzioni di invio dati differenti, in particolare:
+- nel 2025 si è sperimentata la spedizione delle immagini via radio VHF per mezzo del modo FM SSTV, lo stesso utilizzato dalla stazione spaziale internazionale per inviare immagini dello spazio ai radioamatori
+- nel 2026 si è sperimentata la spedizione di un messaggio di testo attraverso la rete off-grid Meshtastic ed i dispositivi LoRa. Il messaggio contiene una probabilità di riconoscimento della specie fotografata basata su IA, utilizzando un modello adatto alla Raspberry AI camera. A scopo dimostrativo per la Maker Faire 2026 il modello è stato allenato su 5 specie di uccelli.
+ 
+## Attività di setup iniziali per l'uso del Raspberry pi zero 2W
 
 Per l'inizializzazione del dispositivo al primo utilizzo sono necessarie alcune attività per le quali è necessario collegare al dispositivo un monitor o TV tramite il cavo HDMI ed una tastiera+mouse tramite il cavo USB aggiuntivo.
 
@@ -17,7 +22,7 @@ Per l'inizializzazione del dispositivo al primo utilizzo sono necessarie alcune 
 
  ![RPI-Serial](./images/RPI-USB-to-Serial_7.png)
 
-Per il collegamento attraverso la porta seriale è necessario abilitarne l'accesso nel file config.txt inserendo la seguente riga: enable_uart=1
+Per il collegamento attraverso la porta seriale è necessario abilitarne l'accesso nel file /boot/firmware/config.txt inserendo la seguente riga: enable_uart=1
 
 Nelle versioni più recenti del sistema Raspian OS non esiste un utente preconfigurato con cui eseguire il login tuttavia tramie il software Raspberry Pi Imager è possibile definire le principali configurazioni prima ancora del primo avvio, cosa che in questo progetto abbiamo fatto per voi.
 
@@ -48,6 +53,47 @@ Per il collegamento via seriale abbiamo utilizzato il comando: tio /dev/ttyUSB0,
 
 Tenete a mente che durante il primo avvio il sistema opera delle configurazioni automatiche ed esegue anche un riavvio automatico, quindi impiega necessariamente più tempo a partire rispetto ad una normale procedura, come accadrà in seguito. Se tutto è andato a buon fine avrete a video la richiesta di login, oppure il desktop del sistema Raspian OS, se avete installato la versione desktop. In tal caso potrete aprire una finestra terminale per proseguire con le attività di configurazione descritte nel seguito.
 
+Per agevolare le attività di configurazione è possibile attivare il collegamento via USB direttamente da un computer ospitante, utilizzando un cavo USB collegato alla porta USB dati del Raspberry (ricordiamo che una delle due porte consente solo l'alimentazione del dispositivo). Per utilizzare questa utile modalità tuttavia occorre fare alcune modifiche ai file di configurazione dell'immmagine appena creata, ovvero:
+
+~~~
+nel file /boot/firmware/config.txt assicurarsi che vi siano le seguenti istruzioni
+...
+dtoverlay=dwc2
+enable_uart=1
+...
+
+nel file /boot/firmware/cmdline.txt aggiungere in coda alla unica riga di comando esistente la seguente stringa
+modules-load=dwc2,g_serial
+~~~
+
+Inoltre occorre definire un file unit per il servizio getty che abilita il login sulla ttyGS0, quindi create il file /etc/systemd/system/serial-getty@ttyGS0.service con il seguente contenuto
+
+~~~
+[Service]
+ExecStart=-/sbin/agetty -o '-p -- \u' --keep-baud 115200,57600,38400,9600 ttyGS0 vt102
+Type=idle
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+~~~
+
+Ed abilitare il servizio appena definito con i seguenti comandi:
+
+~~~
+sudo systemctl enable serial-getty@ttyGS0.service
+sudo systemctl start serial-getty@ttyGS0.service
+~~~
+
+Ci sono alcuni comandi che possono essere utilizzati per risolvere eventuali problematiche con la linea seriale:
+
+~~~
+lsmod | grep g_serial
+sudo modprobe g_serial
+dmesg | grep -i usb
+dmesg | grep -i g_serial
+~~~
+
 Eseguire le operazioni seguenti:
 
 - eseguire il login con username e password impostati (l'importante è che la home directory si chiami /home/ilfarodargento)
@@ -63,7 +109,29 @@ $ apt update -y \
 > [!NOTE] 
 > Questo task può durare anche 30 minuti
 
+## Configurazione per la trasmissione radio FM SSTV
+
+Occorre fornire al sistema un nuovo dispositivo audio differente da quello dell'uscita HDMI. l'indicazione che vogliamo un ulteriore dispositivo di uscita per l'audio e che quindi debba essere redirezionato sui pin GPIO 18 e 13 in modalità PWM
+
+~~~bash
+gpio=18,13,a5
+audio_pwm_mode=2
+dtoverlay=audremap,pins_18_13
+~~~
+
+Occorre installare anche il modulo Python pysstv se si vuole utilizzare la trasmissione in SSTV, seguire i passaggi elencati nel seguito
+
+~~~bash
+$ git clone https://github.com/dnet/pySSTV
+...
+$ cd pySSTV
+$ python setup.py build
+$ sudo python setup.py install
+~~~
+
 Terminato l'operazione è consigliato effettuare il riavvio
+
+## Prima installazione del software da riga di comando
 
 Procedere all'installazione delle dipendenze
 
@@ -73,65 +141,77 @@ $ sudo apt update && \
                       ffmpeg \
                       git \
                       python3-serial \
+                      python3-setuptools \
+                      imagemagick \
 ~~~
 
-Terminata l'installazione effettuare il clone di questo repository all'interno della RPi
+Nel caso l'installazione preveda l'uso della Raspberry AI camera ed i dispositivi LoRa, occorre installare del software aggiuntivo 
+
+~~~bash
+$ sudo apt install -y imx500-all
+                      python3-opencv
+                      python3-munkres
+                      python3-meshtastic
+~~~
 
 ~~~bash
 $ git clone https://github.com/idamato/birdgarden/
 ~~~
 
-e procedere all'installazione
+il comando appena dato copia nel raspberry anche delle cartelle che non ci occorrono ed occupano spazio inutile, sono state usate per il training e quindi potreste rimuoverle, si tratta di MyDrive, di colab-notebook e di drawings.
+Fatto questo potete procedere all'esecuzione dello script di installazione
 
-~~~
+~~~bash
 $ cd birdgarden
 $ sudo bash install_rpi.sh
 ~~~
 
+## Cose da fare prima di utilizzare il dispositivo
 
 - modificare username e password e identificativo TAG con la CPUID nel file wordpress_playground.py secondo le indicazioni ricevute al momento dell'adesione al progetto. (Viene creato un account all'interno del portale Birdgarden 2.0 con le credenziali per la pubblicazione delle foto/video dal dispositivo)
-- creare il link simbolico al file photo.service di avvio del servizio al boot:
-  sudo cp /home/ilfarodargento/birdgarden/photo.service /lib/systemd/system/photo.service ;
-  sudo systemctl enable photo.service ;
-  sudo systemctl start photo.service (comando per l'avvio manuale) ;
-  sudo journalctl --unit=photo.service (per verificare il log delle esecuzioni precedenti)
-- configurare il comando a tempo (crontab -e) aggiungendo in fondo la seguente riga:
-  - `30 * * * * /home/ilfarodargento/birdgarden/sendphoto.sh >> /home/ilfarodargento/logs/cron.log 2>&1`
-- dalla /home/ilfarodargento creare le directory per i log e per le foto da spedire e spedite con: `mkdir logs departures sent`
-- per la rotazione dei log installiamo il file di configurazione: `sudo cp birdgarden/birdgarden /etc/logrotate.d/`
-- esegure il test del focus della fotocamera sulla vostra installazione eseguendo il comando: `python3 test-camera-focus.py`; tenete presente che se state utilizzando il terminale senza grafica dovrete prima modificare lo script impostando la preview a False.
+- eseguire il test del focus della fotocamera sulla vostra installazione. Dovete prima disattivare il servizio con il comando: `sudo systemctl stop photo.service` (potrete poi riavviarlo con il comando di start) e di seguito date il comando: `python3 test-camera-focus.py`; tenete presente che se state utilizzando il terminale senza grafica dovrete prima modificare lo script impostando la preview a False. Tenete a mente che ogni modello di camera ha le sue caratteristiche.
+- Se state utilizzando una Raspberry AI camerea eseguire il test del focus della fotocamera sulla vostra installazione. Dovete prima disattivare il servizio con il comando: `sudo systemctl stop photoAI.service` (potrete poi riavviarlo con il comando di start) e di seguito date il comando: `python3 test-camera-focus-imx500.py`; tenete presente che se state utilizzando il terminale senza grafica dovrete prima modificare lo script impostando la preview a False. Tenete a mente che ogni modello di camera ha le sue caratteristiche.
 - collegare anche il dispositivo micro:bit caricandovi il codice `serial_data_logger.py` tramite il sito [Makecode](makecode.microbit.org).
 - Se si desidera modificare la configurazione del WiFi si può procedere nel modo seguente: eseguire il comando: `sudo nmtui`, ed abilitare la rete wifi di interesse.
 
-Se si desidera modificare la configurazione del WiFi si può procedere nel modo seguente:
-- eseguire il comando: sudo nmtui, ed abilitare la rete wifi di interesse
+![Rpi-Serial-Camera](./images/schema.png)
 
-Ci sono inoltre una serie di aspetti di configurazione che sono stati curati all'interno del portale https://www.webradiofaro.it/birdgarden/ che utilizza Wordpress.
-In particolare deve essere creato un utente/ruolo specifico associato al dispositivo in modo che nello stesso portale possano concorrere le pubblicazioni di tutti i dispositivi.
-Oltre all'utente deve essere anche creata una chiave applicativa legata all'applicazione Birdgarden e con essa si avranno le credenziali da inserire nello scirpt Python per l'invio dati.
+Ci sono inoltre una serie di aspetti di configurazione che sono stati curati all'interno del portale https://www.webradiofaro.it/birdgarden/ che utilizza Wordpress. In particolare deve essere creato un utente/ruolo specifico associato al dispositivo in modo che nello stesso portale possano concorrere le pubblicazioni di tutti i dispositivi. Oltre all'utente deve essere anche creata una chiave applicativa legata all'applicazione Birdgarden e con essa si avranno le credenziali da inserire nello scirpt Python per l'invio dati. Uno specifico tag verrà associato alla CPUID del dispositivo Raspberry Pi Zero 2W e le coordinate geografiche dovranno essere fornite affinché sia attivato il puntamento all'interno della mappa.
 
--
+## APPENDICE per l'utilizzo di un microfono USB
 
+E' stato aggiunto al progetto il file test-video-microphone.py che consente di verificare il buon funzionamento del microfono (USB PnP) collegato al Raspberry sul device hw:1,0. Per rilevare il device corretto usare il comando `arecord -l` che fornirà un output di questo tipo:
 
-# Testing 
+~~~
+**** List of CAPTURE Hardware Devices ****
+card 1: Device [USB PnP Sound Device], device 0: USB Audio [USB Audio]
+  Subdevices: 1/1
+  Subdevice #0: subdevice #0
+~~~
 
->[!WARNING]
-Work in progress
+Quindi nel sorgente del programma andare a sostituire il device con quello corretto: `audio_device = "hw:1,0"`. Avviando il programma con il comando `python test-video-microphone.py`, se non ci sono errori verrà creato un file con audio e video in /tmp/registrazione.mp4
+Se il test è andato a buon fine potete modificare il contenuto di serialandphoto.py e andare a togliere i commenti alle righe che riguardano l'utilizzo dell'audio, in particolare occorre caricare le librerie H264Encoder e PyavOutput, commentare la riga che esegue la cattura del video: `camera.start_and_record_video(filename + ".mp4", duration=30)` e togliere il commento alle seguenti:
 
-Per RPi  ARMv7
-```bash
-podman run -it  --volume $PWD:/src --platform=linux/arm/7 dtcooper/raspberrypi-os:bookworm
-```
+~~~
+audio_device = "hw:1,0"
+...
+# video_config = picam2.create_video_configuration({'size': (1280, 720), 'format': 'YUV420'})
+camera.configure(video_config)
+encoder = H264Encoder(bitrate=6_000_000)
+encoder.audio = True
+output = PyavOutput(filename + ".mp4")
+camera.start_recording(encoder, output)
+time.sleep(30)  # durata registrazione
+camera.stop_recording()
+~~~
 
-Per RPi ARM64
+## APPENDICE per utilizzo LoRa e Meshtastic
 
-```bash
-podman run -it  --volume $PWD:/src --platform=linux/arm64 dtcooper/raspberrypi-os:bookworm
-```
-
-e poi 
+Vi ricordiamo che il dispositivo LoRa deve essere prima configurato correttamente, vi suggeriamo di consultare il sito Darkmesh https://darkmesh.neocities.org per l'utilizzo di Meshtastic, inoltre nella directory MyDrive abbiamo inserito un APK di Darkmesh personalizzato nella grafica per il Birdgarden da Salvatore dei Bardi che ringraziamo!
+In Meshtastic abbiamo creato un canale pubblico per lo scambio dei messaggi tra i dispositivi, per il quale nella nostra configurazione viene utilizzato l'indice 2, potrebbe variare nel vostro caso. Anche la porta seriale USB collegata al Raspberry, dipende dal numero di dispositivi che avete collegato, per noi è /dev/ttyUSB0
+Per eseguire un semplice test del vostro dispositivo LoRa potete utilizzare i comandi seguenti.
 
 ~~~bash
-# cd /src
-# bash install_rpi.sh
+$ meshtastic --info
+$ meshtastic --ch-index 2 --port /dev/ttyUSB0 --sendtext "Cip cip"
 ~~~

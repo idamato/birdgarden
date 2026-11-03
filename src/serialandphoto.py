@@ -1,14 +1,19 @@
 #!/usr/bin/python
-
 from time import sleep
 from picamera2 import Picamera2
 from libcamera import controls
 import serial
 import os
+import subprocess
+from datetime import datetime
+# Caricare le due seguenti righe solo se disponibile anche il microfono
+# from picamera2.encoders import H264Encoder
+# from picamera2.outputs import PyavOutput
+
 # from gpiozero import LED
 # from gpiozero import MotionSensor
 
-# funzione per la gestione della lettura dei dati dalla porta seriale
+# funzione per la gestione della lettura dei dati dalla porta seriale a cui è collegato il micro:bit
 porta = '/dev/ttyACM0'
 baudrate = 115200
 
@@ -47,20 +52,21 @@ def arresta_sistema():
 
 # inizializza la fotocamera
 camera = Picamera2()
-# l'anodo del LED (gamba lunga) è collegato al GPIO 17
+# nel caso di utilizzo di un LED infrarossi, l'anodo del LED (gamba lunga) è collegato al GPIO 17
 # fra il catodo (gamba corta) e GROUND è necessario collegare una resistenza di almeno 100 ohm
 # flash_led = LED(17)
 # nel caso di utilizzo di motion sensor
 # sensor = MotionSensor(14)
 
 id = 0
+
 # capture_config = camera.create_still_configuration(main={"size":(1920, 1080)}, lores={"size":(640,480)})
 
 # imposta il modo autofocus nel continuo
 # camera.set_controls({"AfMode": controls.AfModeEnum.Continuous})
 
 # imposta il modo autofocus con alta velocità
-#camera.set_controls({"AfMode": controls.AfModeEnum.Continuous, "AfSpeed": controls.AfSpeedEnum.Fast})
+# camera.set_controls({"AfMode": controls.AfModeEnum.Continuous, "AfSpeed": controls.AfSpeedEnum.Fast})
 
 # imposta il focus in modalità manuale a 10cm, il minimo
 # camera.set_controls({"AfMode": controls.AfModeEnum.Manual, "LensPosition": 10.0})
@@ -70,6 +76,9 @@ id = 0
 
 # capture_config = camera.create_still_configuration()
 # camera.configure(capture_config)
+
+# uncomment this line if you want to record audio and set the appropriate device
+# audio_device = "hw:1,0"
 
 print ("Hello this is the start!")
 
@@ -92,7 +101,9 @@ while True:
         camera.start()
         # capture_config = camera.create_still_configuration(main={"size":(1920, 1080)}, lores={"size":(640,480)})
         capture_config = camera.create_still_configuration()
-        filename = "/home/ilfarodargento/departures/" + str(id) + "_" + str(luce) + "_" + str(temperatura) + "_" + str(audio) + "_" + str(sonar)
+        # salva data/ora corrente in formato %Y%m%d-%H%M%S nella variabile
+        valdata = datetime.now().strftime("%Y%m%d-%H%M%S")
+        filename = "/usr/local/birdgarden/departures/" + str(valdata) + "_" + str(id) + "_" + str(luce) + "_" + str(temperatura) + "_" + str(audio) + "_" + str(sonar)
         # flash_led.on()
         camera.set_controls({"AfMode": controls.AfModeEnum.Continuous, "AfSpeed": controls.AfSpeedEnum.Fast})
         # attendo un secondo per la messa a fuoco
@@ -100,7 +111,16 @@ while True:
         # esegue la foto
         camera.switch_mode_and_capture_file(capture_config, filename + ".jpg")
         # in caso di video
-        camera.start_and_record_video(filename + ".mp4", duration=15)
+        camera.start_and_record_video(filename + ".mp4", duration=30)
+        # in caso di video + audio commentare la riga precedente e usare le seguenti
+        # video_config = picam2.create_video_configuration({'size': (1280, 720), 'format': 'YUV420'})
+        # camera.configure(video_config)
+        # encoder = H264Encoder(bitrate=6_000_000)
+        # encoder.audio = True
+        # output = PyavOutput(filename + ".mp4")
+        # camera.start_recording(encoder, output)
+        # time.sleep(30)  # durata registrazione
+        # camera.stop_recording()
         # flash_led.off()
         camera.stop()
         print('missione compiuta: ', filename)

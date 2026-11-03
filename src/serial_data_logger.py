@@ -1,7 +1,19 @@
 def on_button_pressed_a():
+    global maxdist
+    maxdist += -1
+    basic.show_number(maxdist)
+input.on_button_pressed(Button.A, on_button_pressed_a)
+
+def on_button_pressed_ab():
     global trig0
     trig0 = 1
-input.on_button_pressed(Button.A, on_button_pressed_a)
+input.on_button_pressed(Button.AB, on_button_pressed_ab)
+
+def on_button_pressed_b():
+    global maxdist
+    maxdist += 1
+    basic.show_number(maxdist)
+input.on_button_pressed(Button.B, on_button_pressed_b)
 
 def on_logo_pressed():
     global trig0
@@ -22,7 +34,9 @@ audio = 0
 temperatura = 0
 luce = 0
 trig0 = 0
+maxdist = 0
 serial.redirect_to_usb()
+maxdist = 13
 trig0 = 0
 basic.show_icon(IconNames.HEART)
 basic.pause(2000)
@@ -30,7 +44,7 @@ basic.pause(2000)
 def on_forever():
     global sonar2, trig0
     sonar2 = sonar.ping(DigitalPin.P0, DigitalPin.P1, PingUnit.CENTIMETERS)
-    if trig0 == 1 or sonar2 > 1 and sonar2 < 13:
+    if trig0 == 1 or sonar2 > 1 and sonar2 < maxdist:
         trig0 = 1
         basic.show_number(trig0)
         rileva()

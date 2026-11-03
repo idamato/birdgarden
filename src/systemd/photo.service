@@ -4,7 +4,7 @@ Description=Make photos at serial event
 
 [Service]
 User=birdgarden
-ExecStart=/usr/bin/bash -c '/usr/bin/python /usr/local/birdgarden/serialandphoto.py >> /tmp/ramdisk/birdgarden/serialandphoto.log 2>&1'
+ExecStart=/usr/bin/bash -c '/usr/bin/python /usr/local/birdgarden/serialandphoto.py >> /var/log/birdgarden/serialandphoto.log 2>&1'
 
 [Install]
 WantedBy=multi-user.target

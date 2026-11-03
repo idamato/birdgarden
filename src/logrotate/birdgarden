@@ -1,4 +1,4 @@
-/var/logs/birdgarden/cron.log /var/logs/birdgarden/serialandphoto.log {
+/var/log/birdgarden/cron.log /var/log/birdgarden/serialandphoto.log {
 	weekly
 	rotate 54
 	compress
